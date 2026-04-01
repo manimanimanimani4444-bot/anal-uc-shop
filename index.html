@@ -3,26 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANAL UC SHOP</title>
+<title>ANAL SHOP</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial;
-    background: linear-gradient(180deg, #0a0000, #1a0000);
+    background: black;
     color: white;
 }
 
-.header {
-    padding: 20px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    background: linear-gradient(90deg, red, darkred);
+/* IMAGE HEADER */
+.top-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-.page { display: none; padding: 15px; }
-.active { display: block; }
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 24px;
+    padding: 10px;
+    background: red;
+    font-weight: bold;
+}
+
+/* PAGE */
+.page { display:none; padding:15px; }
+.active { display:block; }
 
 .menu-btn {
     background:#111;
@@ -34,41 +43,39 @@ body {
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 15px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
 }
 
 .card {
-    background: #111;
-    padding: 15px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 10px red;
+    background:#111;
+    padding:15px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 0 10px red;
 }
 
-.price { color: #00ff88; font-size: 18px; }
+.price { color:#00ff88; }
 
 button {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    background: red;
-    color: white;
-    font-weight: bold;
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:white;
 }
 
-.back { margin-bottom: 10px; color: #aaa; }
+.back { color:#aaa; margin-bottom:10px; }
 
 /* MODAL */
 .modal {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.8);
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.8);
     display:none;
     justify-content:center;
     align-items:center;
@@ -80,49 +87,51 @@ button {
     border-radius:15px;
     width:80%;
     text-align:center;
-    box-shadow:0 0 15px red;
 }
 
 .modal-box input {
     width:100%;
     padding:10px;
     margin-top:10px;
-    border:none;
     border-radius:10px;
+    border:none;
 }
 
 .cancel { background:#555; }
 
 /* SUCCESS */
 .success {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #00c853;
-    padding: 15px 25px;
-    border-radius: 10px;
-    display: none;
-    font-weight: bold;
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#00c853;
+    padding:10px 20px;
+    border-radius:10px;
+    display:none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">🔥 ANAL UC SHOP 🔥</div>
+<!-- IMAGE -->
+<img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" class="top-img">
+
+<div class="title">🔥 ANAL SHOP 🔥</div>
 
 <!-- MAIN -->
 <div id="main" class="page active">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('kabinet')">👤 Личный кабинет</div>
+<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
+<div class="menu-btn" onclick="openPage('kabinet')">👤 Кабинет</div>
 </div>
 
 <!-- UC -->
 <div id="uc" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
-<h2>💎 PUBG UC</h2>
+<h2>UC</h2>
 
 <div class="grid">
 <div class="card"><h3>60 UC</h3><div class="price">75₽</div><button onclick="buy('60 UC',75)">Купить</button></div>
@@ -136,129 +145,123 @@ button {
 <div id="steam" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<h2>💻 Пополнение Steam</h2>
+<input type="number" id="steamSum" placeholder="Сумма">
+<input type="text" id="steamLogin" placeholder="Логин">
 
-<input type="number" id="steamSum" placeholder="Введите сумму" style="width:100%;padding:10px;border-radius:10px;border:none;">
-<input type="text" id="steamLogin" placeholder="Ваш логин Steam" style="width:100%;padding:10px;border-radius:10px;border:none;margin-top:10px;">
-
-<div id="result" style="margin-top:10px;"></div>
+<div id="result"></div>
 
 <button onclick="calcSteam()">Рассчитать</button>
-<button onclick="buySteam()">Оплатить</button>
+<button onclick="buySteam()">Купить</button>
+</div>
+
+<!-- STARS -->
+<div id="stars" class="page">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<h2>⭐ Telegram Stars</h2>
+
+<input type="number" id="starsAmount" placeholder="Сколько Stars">
+
+<button onclick="buyStars()">Купить</button>
 
 </div>
 
 <!-- KABINET -->
 <div id="kabinet" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
-<h2>👤 Личный кабинет</h2>
 <div id="kabinetData"></div>
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <div class="modal-box">
-    <h3>Введите PUBG ID</h3>
-    <input type="text" id="pubgId" placeholder="Ваш ID">
-    <button onclick="confirmBuy()">Подтвердить</button>
-    <button onclick="closeModal()" class="cancel">Отмена</button>
-  </div>
+<div class="modal-box">
+<h3>Введите PUBG ID</h3>
+<input id="pubgId">
+<button onclick="confirmBuy()">OK</button>
+<button onclick="closeModal()" class="cancel">Отмена</button>
+</div>
 </div>
 
 <!-- SUCCESS -->
-<div id="success" class="success">✅ Покупка успешна</div>
+<div id="success" class="success">✅ Успешно</div>
 
 <script>
 
-let currentItem = "";
-let currentPrice = 0;
+let orders = JSON.parse(localStorage.getItem("orders")||"[]");
+let currentItem="", currentPrice=0;
 
-let user_id = localStorage.getItem("user_id");
-if(!user_id){
-    user_id = "user_" + Math.floor(Math.random()*100000);
-    localStorage.setItem("user_id", user_id);
+function openPage(p){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById(p).classList.add("active");
+if(p=="kabinet") loadKabinet();
 }
 
-let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-function openPage(page){
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    document.getElementById(page).classList.add("active");
-
-    if(page === "kabinet") loadKabinet();
-}
-
-function buy(item, price){
-    currentItem = item;
-    currentPrice = price;
-    document.getElementById("modal").style.display = "flex";
-}
-
-function closeModal(){
-    document.getElementById("modal").style.display = "none";
+function buy(item,price){
+currentItem=item;
+currentPrice=price;
+document.getElementById("modal").style.display="flex";
 }
 
 function confirmBuy(){
-    let id = document.getElementById("pubgId").value;
-    if(!id) return;
+let id=document.getElementById("pubgId").value;
+if(!id)return;
 
-    orders.push({item: currentItem, price: currentPrice});
-    localStorage.setItem("orders", JSON.stringify(orders));
+orders.push({item:currentItem,price:currentPrice});
+localStorage.setItem("orders",JSON.stringify(orders));
 
-    showSuccess();
-    closeModal();
+showSuccess();
+closeModal();
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
 }
 
 function showSuccess(){
-    let el = document.getElementById("success");
-    el.style.display = "block";
-
-    setTimeout(()=>{
-        el.style.display = "none";
-    }, 2000);
+let s=document.getElementById("success");
+s.style.display="block";
+setTimeout(()=>s.style.display="none",2000);
 }
 
 function loadKabinet(){
-    let html = `<b>ID:</b> ${user_id}<br><br>`;
-    let total = 0;
-
-    orders.forEach(o=>{
-        total += o.price;
-        html += `📦 ${o.item} — ${o.price}₽<br>`;
-    });
-
-    html += `<br><b>💰 Всего: ${total}₽</b>`;
-
-    document.getElementById("kabinetData").innerHTML = html;
+let html="",total=0;
+orders.forEach(o=>{
+total+=o.price;
+html+=o.item+" "+o.price+"₽<br>";
+});
+html+="<br>💰 "+total+"₽";
+document.getElementById("kabinetData").innerHTML=html;
 }
 
 /* STEAM */
 function calcSteam(){
-    let sum = Number(document.getElementById("steamSum").value);
-    if(!sum) return;
-
-    let total = Math.floor(sum * 1.15);
-
-    document.getElementById("result").innerHTML =
-        "💰 К оплате: " + total + "₽";
+let sum=Number(document.getElementById("steamSum").value);
+if(!sum)return;
+document.getElementById("result").innerHTML="Итого: "+Math.floor(sum*1.15)+"₽";
 }
 
 function buySteam(){
-    let sum = Number(document.getElementById("steamSum").value);
-    let login = document.getElementById("steamLogin").value;
+let sum=Number(document.getElementById("steamSum").value);
+let login=document.getElementById("steamLogin").value;
+if(!sum||!login)return;
 
-    if(!sum || !login) return;
+let total=Math.floor(sum*1.15);
 
-    let total = Math.floor(sum * 1.15);
+orders.push({item:"Steam "+login,price:total});
+localStorage.setItem("orders",JSON.stringify(orders));
 
-    orders.push({
-        item: "Steam " + sum + "₽ (" + login + ")",
-        price: total
-    });
+showSuccess();
+}
 
-    localStorage.setItem("orders", JSON.stringify(orders));
+/* STARS */
+function buyStars(){
+let a=document.getElementById("starsAmount").value;
+if(!a)return;
 
-    showSuccess();
+orders.push({item:"Stars "+a,price:a});
+localStorage.setItem("orders",JSON.stringify(orders));
+
+showSuccess();
 }
 
 </script>
