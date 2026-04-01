@@ -12,33 +12,41 @@ background:#000;
 color:#fff;
 }
 
+/* PAGE */
 .page{display:none;}
 .page.active{display:block;}
 
+/* HEADER */
 .header{
 height:200px;
-overflow:hidden;
 }
 .header img{
 width:100%;
 height:100%;
 object-fit:cover;
-filter:brightness(0.6);
 }
 
-.container{padding:15px;}
+/* CONTAINER */
+.container{
+padding:15px;
+}
 
+/* MENU */
 .menu-btn{
 background:#111;
 padding:15px;
 border-radius:15px;
 margin-top:10px;
 text-align:center;
-box-shadow:0 0 15px red;
+box-shadow:0 0 10px red;
 }
 
-.back{margin-bottom:10px;}
+/* BACK */
+.back{
+margin-bottom:10px;
+}
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -46,53 +54,44 @@ gap:12px;
 margin-top:20px;
 }
 
+/* CARD */
 .card{
 background:#111;
 border-radius:20px;
 padding:20px;
 text-align:center;
-box-shadow:0 0 20px red;
+box-shadow:0 0 15px red;
 }
 
 .price{
 color:#00ff88;
+font-size:18px;
 margin:10px 0;
 }
 
+/* BUTTON */
 button{
 width:100%;
 padding:12px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 background:red;
 color:#fff;
 font-weight:bold;
-box-shadow:0 0 10px red;
-margin-top:10px;
 }
 
 button:active{
-transform:scale(0.9);
+transform:scale(0.95);
 }
 
-input{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-background:#000;
-color:#fff;
-box-shadow:0 0 10px red inset;
-}
-
+/* MODAL */
 .modal{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,0,0.8);
 display:none;
 justify-content:center;
 align-items:center;
@@ -103,24 +102,33 @@ z-index:999;
 background:#111;
 padding:20px;
 border-radius:20px;
-width:85%;
-box-shadow:0 0 30px red;
+width:80%;
+box-shadow:0 0 20px red;
 text-align:center;
 }
 
-/* FIX ДЛЯ ТЕКСТА */
+.modal-box input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#000;
+color:#fff;
+}
+
+/* SUCCESS */
 .success-text{
 margin-top:10px;
-color:#ccc;
-word-wrap:break-word;
-overflow-wrap:break-word;
 word-break:break-word;
+overflow-wrap:break-word;
+color:#ccc;
 }
 
 .success-icon{
 font-size:50px;
 color:#00ff88;
-text-shadow:0 0 15px #00ff88;
+text-shadow:0 0 10px #00ff88;
 }
 </style>
 </head>
@@ -129,6 +137,7 @@ text-shadow:0 0 15px #00ff88;
 
 <!-- MAIN -->
 <div id="main" class="page active">
+
 <div class="header">
 <img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
 </div>
@@ -138,6 +147,7 @@ text-shadow:0 0 15px #00ff88;
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
 <div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
 </div>
+
 </div>
 
 <!-- UC -->
@@ -145,18 +155,42 @@ text-shadow:0 0 15px #00ff88;
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
+
 <div class="card">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
-<button onclick="openModal('60 UC')">Купить</button>
+<button onclick="openModal('60 UC',75)">Купить</button>
 </div>
 
 <div class="card">
 <h3>325 UC</h3>
 <div class="price">379₽</div>
-<button onclick="openModal('325 UC')">Купить</button>
+<button onclick="openModal('325 UC',379)">Купить</button>
+</div>
+
+<div class="card">
+<h3>660 UC</h3>
+<div class="price">749₽</div>
+<button onclick="openModal('660 UC',749)">Купить</button>
+</div>
+
+<div class="card">
+<h3>1800 UC</h3>
+<div class="price">1990₽</div>
+<button onclick="openModal('1800 UC',1990)">Купить</button>
+</div>
+
 </div>
 </div>
+
+<!-- STEAM -->
+<div id="steam" class="page container">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<input id="steamSum" placeholder="Сумма">
+<input id="steamLogin" placeholder="Логин">
+
+<button onclick="buySteam()">Купить</button>
 </div>
 
 <!-- STARS -->
@@ -172,7 +206,6 @@ text-shadow:0 0 15px #00ff88;
 <div class="modal-box">
 <h3>Введи PUBG ID</h3>
 <input id="pubgId" placeholder="Например: 5123456789">
-
 <button onclick="confirmBuy()">Подтвердить</button>
 <button onclick="closeModal()">Отмена</button>
 </div>
@@ -182,7 +215,7 @@ text-shadow:0 0 15px #00ff88;
 <div id="success" class="modal">
 <div class="modal-box">
 <div class="success-icon">✔</div>
-<h3>Успешно!</h3>
+<h3>Успешно</h3>
 <div id="successText" class="success-text"></div>
 <button onclick="closeSuccess()">OK</button>
 </div>
@@ -191,14 +224,18 @@ text-shadow:0 0 15px #00ff88;
 <script>
 
 let currentItem="";
+let currentPrice="";
+let orders = JSON.parse(localStorage.getItem("orders")||"[]");
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 }
 
-function openModal(item){
+/* MODAL */
+function openModal(item,price){
 currentItem=item;
+currentPrice=price;
 document.getElementById("modal").style.display="flex";
 }
 
@@ -206,6 +243,7 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
+/* CONFIRM */
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 
@@ -214,8 +252,12 @@ alert("Введи ID");
 return;
 }
 
+orders.push({item:currentItem+" | ID:"+id,price:currentPrice});
+localStorage.setItem("orders",JSON.stringify(orders));
+
 closeModal();
 
+/* КРАСИВОЕ ОКНО */
 document.getElementById("success").style.display="flex";
 document.getElementById("successText").innerHTML =
 "Куплено: "+currentItem+"<br>ID: "+id;
@@ -223,6 +265,24 @@ document.getElementById("successText").innerHTML =
 
 function closeSuccess(){
 document.getElementById("success").style.display="none";
+}
+
+/* STEAM */
+function buySteam(){
+let sum=document.getElementById("steamSum").value;
+let login=document.getElementById("steamLogin").value;
+
+if(!sum||!login){
+alert("Заполни все поля");
+return;
+}
+
+orders.push({item:"Steam "+login,price:sum});
+localStorage.setItem("orders",JSON.stringify(orders));
+
+document.getElementById("success").style.display="flex";
+document.getElementById("successText").innerHTML =
+"Steam: "+login+"<br>Сумма: "+sum+"₽";
 }
 
 /* STARS */
@@ -234,9 +294,12 @@ alert("Введи количество");
 return;
 }
 
+orders.push({item:"Stars "+amount,price:amount});
+localStorage.setItem("orders",JSON.stringify(orders));
+
 document.getElementById("success").style.display="flex";
 document.getElementById("successText").innerHTML =
-"⭐ Куплено Stars: "+amount;
+"Куплено Stars: "+amount;
 }
 
 </script>
