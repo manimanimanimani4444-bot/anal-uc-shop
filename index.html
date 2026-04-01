@@ -1,153 +1,551 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANAL UC SHOP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ANAL UC SHOP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #000;
-    color: white;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #0f0f1f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
 
-/* заголовок */
-.title {
-    text-align: center;
-    font-size: 28px;
-    margin: 20px;
-}
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* сетка */
-.shop {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    padding: 15px;
-}
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
-/* карточки */
-.card {
-    background: #111;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 20px red;
-}
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
 
-/* цена */
-.price {
-    color: #00ff88;
-    margin: 10px 0;
-}
+        /* Страницы */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
 
-/* кнопка */
-.btn {
-    background: red;
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-}
+        /* Шапка */
+        .header {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .header-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+        }
+        .shop-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* модалка */
-.modal {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
+        /* Контейнер */
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
-.modal-box {
-    background: #111;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 20px red;
-}
+        /* Кнопки меню */
+        .menu-btn {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .menu-btn:hover::before {
+            left: 100%;
+        }
+        .menu-btn:active {
+            transform: scale(0.98);
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+        }
 
-input {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    margin-top: 10px;
-}
-</style>
+        /* Кнопка назад */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Сетка товаров */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        /* Карточка товара */
+        .product-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .product-card:active {
+            transform: scale(0.97);
+        }
+        .product-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fbbf24;
+            margin-bottom: 16px;
+        }
+        .product-price span {
+            font-size: 14px;
+            font-weight: normal;
+            color: rgba(255,255,255,0.6);
+        }
+        .buy-btn {
+            background: linear-gradient(135deg, #ff4757, #ff6b6b);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 20px;
+            width: 100%;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,71,87,0.3);
+        }
+        .buy-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255,71,87,0.4);
+        }
+
+        /* Steam форма */
+        .steam-form {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 24px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+        .steam-form input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .steam-form input:focus {
+            outline: none;
+            border-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255,71,87,0.3);
+        }
+        .steam-form input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Модальное окно */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 32px;
+            padding: 28px;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .modal-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .modal-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal-input:focus {
+            outline: none;
+            border-color: #ff4757;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #ff4757, #ff6b6b);
+            color: white;
+        }
+        .modal-btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .modal-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Уведомление */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            z-index: 1100;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46,204,113,0.3);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Заголовки секций */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="title">ANAL UC SHOP</div>
-
-<div class="shop">
-    <div class="card">
-        <h2>60 UC</h2>
-        <div class="price">75₽</div>
-        <button class="btn" onclick="openModal('60 UC')">Купить</button>
+<!-- ГЛАВНАЯ СТРАНИЦА -->
+<div id="main" class="page active">
+    <div class="header">
+        <img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg" alt="Banner">
+        <div class="header-overlay">
+            <div class="shop-name">🎮 ANAL UC SHOP</div>
+        </div>
     </div>
-
-    <div class="card">
-        <h2>325 UC</h2>
-        <div class="price">379₽</div>
-        <button class="btn" onclick="openModal('325 UC')">Купить</button>
-    </div>
-
-    <div class="card">
-        <h2>660 UC</h2>
-        <div class="price">749₽</div>
-        <button class="btn" onclick="openModal('660 UC')">Купить</button>
-    </div>
-
-    <div class="card">
-        <h2>1800 UC</h2>
-        <div class="price">1990₽</div>
-        <button class="btn" onclick="openModal('1800 UC')">Купить</button>
+    <div class="container">
+        <div class="menu-btn" onclick="openPage('uc')">
+            💎 PUBG UC
+        </div>
+        <div class="menu-btn" onclick="openPage('steam')">
+            💻 Steam
+        </div>
     </div>
 </div>
 
-<!-- МОДАЛКА -->
-<div class="modal" id="modal">
-    <div class="modal-box">
-        <h3>Введи PUBG ID</h3>
-        <input type="text" id="pubgId" placeholder="Например: 5123456789">
-        <br><br>
-        <button class="btn" onclick="buy()">OK</button>
-        <br><br>
-        <button class="btn" onclick="closeModal()">Закрыть</button>
+<!-- СТРАНИЦА UC -->
+<div id="uc" class="page">
+    <div class="container">
+        <button class="back-btn" onclick="openPage('main')">← Назад</button>
+        <div class="section-title">💎 PUBG UC</div>
+        <div class="products-grid" id="uc-grid"></div>
     </div>
 </div>
+
+<!-- СТРАНИЦА STEAM -->
+<div id="steam" class="page">
+    <div class="container">
+        <button class="back-btn" onclick="openPage('main')">← Назад</button>
+        <div class="section-title">💻 Steam</div>
+        <div class="steam-form">
+            <input type="number" id="steamSum" placeholder="💰 Сумма пополнения (₽)">
+            <input type="text" id="steamLogin" placeholder="👤 Логин Steam">
+            <button class="buy-btn" onclick="buySteam()">💳 Оформить заказ</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-icon">🎮</div>
+        <div class="modal-title" id="modalTitle">PUBG ID</div>
+        <div class="modal-subtitle" id="modalSubtitle"></div>
+        <input type="number" id="pubgId" class="modal-input" placeholder="Введите ваш PUBG ID">
+        <div class="modal-buttons">
+            <button class="modal-btn modal-btn-primary" onclick="confirmBuy()">✅ Подтвердить</button>
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">❌ Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- УВЕДОМЛЕНИЕ -->
+<div id="toast" class="toast">✅ Куплено!</div>
 
 <script>
-let selected = "";
+    // Товары
+    const products = [
+        { name: "60 UC", price: 75, icon: "🎮", oldPrice: 90 },
+        { name: "325 UC", price: 379, icon: "🎮", oldPrice: 450 },
+        { name: "660 UC", price: 749, icon: "🎮", oldPrice: 890 },
+        { name: "1800 UC", price: 1990, icon: "🎮", oldPrice: 2400 },
+        { name: "3850 UC", price: 3990, icon: "🎮", oldPrice: 4800 }
+    ];
 
-function openModal(product) {
-    selected = product;
-    document.getElementById("modal").style.display = "flex";
-}
+    let currentProduct = null;
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
 
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
-}
-
-function buy() {
-    let id = document.getElementById("pubgId").value;
-
-    if (!id) {
-        alert("Введи ID");
-        return;
+    // Рендер товаров
+    function renderProducts() {
+        const grid = document.getElementById('uc-grid');
+        if (!grid) return;
+        
+        grid.innerHTML = products.map(p => `
+            <div class="product-card">
+                <div class="product-icon">${p.icon}</div>
+                <div class="product-name">${p.name}</div>
+                <div class="product-price">
+                    ${p.price} ₽
+                    ${p.oldPrice ? `<span style="text-decoration: line-through; font-size: 12px; margin-left: 8px;">${p.oldPrice} ₽</span>` : ''}
+                </div>
+                <button class="buy-btn" onclick="openModal('${p.name}', ${p.price})">Купить</button>
+            </div>
+        `).join('');
     }
 
-    alert("Куплено: " + selected + "\\nID: " + id);
+    // Открыть модальное окно
+    function openModal(name, price) {
+        currentProduct = { name, price };
+        document.getElementById('modalTitle').innerHTML = `🎮 ${name}`;
+        document.getElementById('modalSubtitle').innerHTML = `Сумма: ${price} ₽`;
+        document.getElementById('pubgId').value = '';
+        document.getElementById('modal').style.display = 'flex';
+    }
 
-    closeModal();
-}
+    // Закрыть модальное окно
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+        currentProduct = null;
+    }
+
+    // Подтверждение покупки
+    function confirmBuy() {
+        const id = document.getElementById('pubgId').value.trim();
+        
+        if (!id) {
+            showToast('❌ Введите PUBG ID!', '#ff4757');
+            return;
+        }
+        
+        if (id.length < 5 || id.length > 15) {
+            showToast('❌ Неверный формат ID', '#ff4757');
+            return;
+        }
+        
+        if (!currentProduct) return;
+        
+        // Сохраняем заказ
+        const order = {
+            id: Date.now(),
+            product: currentProduct.name,
+            price: currentProduct.price,
+            gameId: id,
+            date: new Date().toLocaleString(),
+            status: 'pending'
+        };
+        
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+        
+        // Показываем уведомление
+        showToast(`✅ ${currentProduct.name} куплено!`, '#2ecc71');
+        
+        // Отправляем данные в бот (опционально)
+        try {
+            const tg = window.Telegram?.WebApp;
+            if (tg) {
+                tg.sendData(JSON.stringify({
+                    action: "buy",
+                    product: currentProduct.name,
+                    price: currentProduct.price,
+                    game_id: id
+                }));
+            }
+        } catch(e) {}
+        
+        closeModal();
+    }
+
+    // Покупка Steam
+    function buySteam() {
+        const sum = document.getElementById('steamSum').value.trim();
+        const login = document.getElementById('steamLogin').value.trim();
+        
+        if (!sum || !login) {
+            showToast('❌ Заполните все поля!', '#ff4757');
+            return;
+        }
+        
+        if (isNaN(sum) || Number(sum) <= 0) {
+            showToast('❌ Введите корректную сумму!', '#ff4757');
+            return;
+        }
+        
+        const order = {
+            id: Date.now(),
+            product: `Steam Пополнение`,
+            price: Number(sum),
+            gameId: login,
+            date: new Date().toLocaleString(),
+            status: 'pending'
+        };
+        
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+        
+        showToast(`✅ Заказ на ${sum}₽ оформлен!`, '#2ecc71');
+        
+        document.getElementById('steamSum').value = '';
+        document.getElementById('steamLogin').value = '';
+    }
+
+    // Показать уведомление
+    function showToast(message, color = '#2ecc71') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.background = `linear-gradient(135deg, ${color}, ${color}dd)`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    // Открыть страницу
+    function openPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    // Инициализация Telegram Web App
+    if (window.Telegram?.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+        
+        // Передаём данные о пользователе
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            console.log('User:', user);
+        }
+    }
+    
+    // Загрузка
+    renderProducts();
 </script>
-
 </body>
 </html>
