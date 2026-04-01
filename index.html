@@ -67,16 +67,10 @@ border-radius:20px;
 padding:20px;
 text-align:center;
 box-shadow:0 0 20px red;
-transition:0.2s;
-}
-.card:hover{
-transform:scale(1.03);
 }
 
-/* PRICE */
 .price{
 color:#00ff88;
-font-size:18px;
 margin:10px 0;
 }
 
@@ -85,7 +79,7 @@ button{
 width:100%;
 padding:12px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:red;
 color:#fff;
 font-weight:bold;
@@ -125,10 +119,14 @@ z-index:999;
 background:#111;
 padding:20px;
 border-radius:20px;
-width:80%;
+width:85%;
 box-shadow:0 0 30px red;
 text-align:center;
 animation:pop 0.2s;
+}
+
+.modal-box button{
+margin-top:12px; /* расстояние между кнопками */
 }
 
 @keyframes pop{
@@ -195,7 +193,7 @@ to{transform:scale(1);opacity:1;}
 <input id="steamSum" placeholder="Сумма">
 <input id="steamLogin" placeholder="Логин">
 
-<button onclick="buySteam()">Рассчитать и купить</button>
+<button onclick="buySteam()">Купить</button>
 </div>
 
 <!-- STARS -->
@@ -212,6 +210,7 @@ to{transform:scale(1);opacity:1;}
 <div class="modal-box">
 <h3>Введи PUBG ID</h3>
 <input id="pubgId" placeholder="Например: 5123456789">
+
 <button onclick="confirmBuy()">Подтвердить</button>
 <button onclick="closeModal()">Отмена</button>
 </div>
@@ -222,13 +221,11 @@ to{transform:scale(1);opacity:1;}
 let currentItem="";
 let currentPrice="";
 
-/* ПЕРЕКЛЮЧЕНИЕ */
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 }
 
-/* MODAL */
 function openModal(item,price){
 currentItem=item;
 currentPrice=price;
@@ -239,7 +236,7 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-/* ПОКУПКА UC */
+/* ПОДТВЕРЖДЕНИЕ */
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 
@@ -248,11 +245,15 @@ alert("Введи ID");
 return;
 }
 
+let confirmId = confirm("Это точно ваш ID?\n\n" + id);
+
+if(!confirmId) return;
+
 closeModal();
 alert("✅ Куплено: "+currentItem+"\nID: "+id);
 }
 
-/* STEAM (+15%) */
+/* STEAM */
 function buySteam(){
 let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
@@ -262,9 +263,9 @@ alert("Заполни все поля");
 return;
 }
 
-let total = Math.round(sum * 1.15);
+let total=Math.round(sum*1.15);
 
-alert("💻 Steam\nЛогин: "+login+"\nСумма: "+total+"₽ (с комиссией)");
+alert("💻 Steam\nЛогин: "+login+"\nСумма: "+total+"₽");
 }
 
 /* STARS */
