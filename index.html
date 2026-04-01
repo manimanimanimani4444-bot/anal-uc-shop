@@ -5,113 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin:0;
-    font-family:Arial;
-    background:#000;
-    color:#fff;
-}
-
-/* HEADER */
-.header {
-    height:220px;
-}
-.header img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
+body{
+margin:0;
+font-family:Arial;
+background:#000;
+color:#fff;
 }
 
 /* PAGE */
-.page { display:none; }
-.page.active { display:block; }
+.page{display:none;}
+.page.active{display:block;}
+
+/* HEADER */
+.header{
+height:200px;
+}
+.header img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
 
 /* CONTAINER */
-.container {
-    padding:15px;
+.container{
+padding:15px;
 }
 
 /* MENU */
-.menu-btn {
-    background:#111;
-    padding:15px;
-    border-radius:15px;
-    margin-top:10px;
-    text-align:center;
-    box-shadow:0 0 15px red;
+.menu-btn{
+background:#111;
+padding:15px;
+border-radius:15px;
+margin-top:10px;
+text-align:center;
+box-shadow:0 0 10px red;
+}
+
+/* BACK */
+.back{
+margin-bottom:10px;
+}
+
+/* INPUT BLOCK */
+.input-box{
+background:#111;
+padding:15px;
+border-radius:15px;
+margin-bottom:15px;
+box-shadow:0 0 10px red;
+}
+
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+margin-top:10px;
+background:#000;
+color:#fff;
 }
 
 /* GRID */
-.grid {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px; /* 👈 опустили ниже */
 }
 
 /* CARD */
-.card {
-    background:#111;
-    border-radius:20px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 0 20px red;
+.card{
+background:#111;
+border-radius:20px;
+padding:20px;
+text-align:center;
+box-shadow:0 0 15px red;
 }
 
-.price { color:#00ff88; }
+.price{
+color:#00ff88;
+font-size:18px;
+margin:10px 0;
+}
 
 /* BUTTON */
-button {
-    margin-top:10px;
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:red;
-    color:white;
-    font-weight:bold;
-    box-shadow:0 0 15px red;
-}
-
-button:active {
-    transform:scale(0.95);
-}
-
-/* INPUT */
-input {
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-}
-
-/* LOADER */
-.loader{
-position:fixed;
-top:0;
-left:0;
+button{
 width:100%;
-height:100%;
-background:#000;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:999;
+padding:12px;
+border:none;
+border-radius:10px;
+background:red;
+color:#fff;
+font-weight:bold;
 }
 
-.spinner{
-width:60px;
-height:60px;
-border:5px solid #333;
-border-top:5px solid red;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:15px;
-}
-
-@keyframes spin{
-to{ transform:rotate(360deg); }
+button:active{
+transform:scale(0.95);
 }
 </style>
 </head>
@@ -135,7 +124,13 @@ to{ transform:rotate(360deg); }
 
 <!-- UC -->
 <div id="uc" class="page container">
-<div onclick="openPage('main')">← Назад</div>
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<!-- ВВОД ID -->
+<div class="input-box">
+Введи PUBG ID:
+<input id="pubgId" placeholder="Например: 5123456789">
+</div>
 
 <div class="grid">
 
@@ -168,7 +163,7 @@ to{ transform:rotate(360deg); }
 
 <!-- STEAM -->
 <div id="steam" class="page container">
-<div onclick="openPage('main')">← Назад</div>
+<div class="back" onclick="openPage('main')">← Назад</div>
 
 <input id="steamSum" placeholder="Сумма">
 <input id="steamLogin" placeholder="Логин">
@@ -178,17 +173,11 @@ to{ transform:rotate(360deg); }
 
 <!-- KABINET -->
 <div id="kabinet" class="page container">
-<div onclick="openPage('main')">← Назад</div>
+<div class="back" onclick="openPage('main')">← Назад</div>
 
 <div id="list"></div>
 <br>
 <div id="total"></div>
-</div>
-
-<!-- LOADER -->
-<div id="loader" class="loader">
-<div class="spinner"></div>
-<div id="loaderText">Обработка заказа...</div>
 </div>
 
 <script>
@@ -202,39 +191,19 @@ document.getElementById(p).classList.add("active");
 if(p==="kabinet") load();
 }
 
-/* ОБРАБОТКА */
-function processOrder(callback){
-let loader=document.getElementById("loader");
-let text=document.getElementById("loaderText");
-
-loader.style.display="flex";
-text.innerText="Обработка заказа...";
-
-setTimeout(()=>{
-text.innerText="Проверка оплаты...";
-
-setTimeout(()=>{
-text.innerText="Успешно ✅";
-
-setTimeout(()=>{
-loader.style.display="none";
-callback();
-},1000);
-
-},1500);
-
-},1500);
-}
-
 /* UC */
 function buy(item,price){
-let id = prompt("Введи PUBG ID:");
-if(!id) return;
+let id=document.getElementById("pubgId").value;
+
+if(!id){
+alert("Введи PUBG ID");
+return;
+}
 
 orders.push({item:item+" | ID:"+id,price});
 localStorage.setItem("orders",JSON.stringify(orders));
 
-processOrder(()=>openPage('kabinet'));
+openPage('kabinet');
 }
 
 /* STEAM */
@@ -242,12 +211,15 @@ function buySteam(){
 let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
 
-if(!sum||!login)return;
+if(!sum||!login){
+alert("Заполни все поля");
+return;
+}
 
 orders.push({item:"Steam "+login,price:sum});
 localStorage.setItem("orders",JSON.stringify(orders));
 
-processOrder(()=>openPage('kabinet'));
+openPage('kabinet');
 }
 
 /* LOAD */
