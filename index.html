@@ -7,26 +7,29 @@
 
 <style>
 body {
-    margin: 0;
-    font-family: Arial;
-    background: black;
-    color: white;
+    margin:0;
+    font-family:Arial;
+    background:black;
+    color:white;
 }
 
-/* IMAGE HEADER */
+/* HEADER */
+.header {
+    display:block;
+}
+
 .top-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    width:100%;
+    height:200px;
+    object-fit:cover;
 }
 
-/* TITLE */
 .title {
-    text-align: center;
-    font-size: 24px;
-    padding: 10px;
-    background: red;
-    font-weight: bold;
+    text-align:center;
+    font-size:24px;
+    padding:10px;
+    background:red;
+    font-weight:bold;
 }
 
 /* PAGE */
@@ -115,10 +118,11 @@ button {
 
 <body>
 
-<!-- IMAGE -->
-<img src="https://images.unsplash.com/photo-1605902711622-cfb43c44367f" class="top-img">
-
+<!-- HEADER -->
+<div id="header" class="header">
+<img src="https://picsum.photos/800/300" class="top-img">
 <div class="title">🔥 ANAL SHOP 🔥</div>
+</div>
 
 <!-- MAIN -->
 <div id="main" class="page active">
@@ -158,10 +162,8 @@ button {
 <div id="stars" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<h2>⭐ Telegram Stars</h2>
-
-<input type="number" id="starsAmount" placeholder="Сколько Stars">
-
+<h2>⭐ Stars</h2>
+<input type="number" id="starsAmount" placeholder="Сколько">
 <button onclick="buyStars()">Купить</button>
 
 </div>
@@ -182,7 +184,6 @@ button {
 </div>
 </div>
 
-<!-- SUCCESS -->
 <div id="success" class="success">✅ Успешно</div>
 
 <script>
@@ -193,6 +194,14 @@ let currentItem="", currentPrice=0;
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
+
+/* СКРЫТИЕ ШАПКИ */
+if(p === "main"){
+    document.getElementById("header").style.display="block";
+}else{
+    document.getElementById("header").style.display="none";
+}
+
 if(p=="kabinet") loadKabinet();
 }
 
