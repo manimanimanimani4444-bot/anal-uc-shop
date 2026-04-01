@@ -3,44 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANAL SHOP</title>
+
+<title>UC SHOP</title>
 
 <style>
 body {
     margin:0;
     font-family:Arial;
-    background:black;
-    color:white;
+    background:#000;
+    color:#fff;
 }
 
-/* HEADER */
-#header {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    z-index:1000;
+/* HEADER IMAGE */
+.header {
+    position:relative;
+    height:230px;
+    overflow:hidden;
 }
 
-.top-img {
+.header img {
     width:100%;
-    height:200px;
+    height:100%;
     object-fit:cover;
 }
 
+/* DARK OVERLAY */
+.header::after {
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:linear-gradient(to bottom, rgba(0,0,0,0.2), #000);
+}
+
+/* TITLE */
 .title {
+    position:absolute;
+    bottom:15px;
+    width:100%;
     text-align:center;
-    font-size:24px;
-    padding:10px;
-    background:red;
+    font-size:26px;
     font-weight:bold;
+    color:#fff;
+}
+
+/* CONTENT */
+.container {
+    padding:15px;
+    margin-top:-20px;
+}
+
+/* BUTTONS */
+.menu-btn {
+    background:#0a0a0a;
+    padding:18px;
+    margin-top:15px;
+    border-radius:20px;
+    text-align:center;
+    font-size:18px;
+    box-shadow:0 0 25px rgba(255,0,0,0.6);
+    transition:0.25s;
+}
+
+.menu-btn:hover {
+    transform:translateY(-3px);
+}
+
+.menu-btn:active {
+    transform:scale(0.95);
 }
 
 /* PAGE */
 .page {
     display:none;
-    padding:15px;
-    padding-top:220px;
     animation:fade 0.3s;
 }
 
@@ -49,25 +84,14 @@ body {
 }
 
 @keyframes fade {
-    from {opacity:0; transform:translateX(20px);}
+    from {opacity:0; transform:translateX(30px);}
     to {opacity:1; transform:translateX(0);}
 }
 
-/* MENU */
-.menu-btn {
-    background:#111;
-    padding:18px;
-    margin-top:12px;
-    border-radius:15px;
-    text-align:center;
-    font-size:18px;
-    box-shadow:0 0 12px red;
-    transition:0.2s;
-}
-
-.menu-btn:active {
-    transform:scale(0.95);
-    box-shadow:0 0 5px red inset;
+/* BACK */
+.back {
+    margin-bottom:10px;
+    color:#aaa;
 }
 
 /* GRID */
@@ -82,91 +106,32 @@ body {
     padding:20px;
     border-radius:15px;
     text-align:center;
-    box-shadow:0 0 12px red;
+    box-shadow:0 0 15px red;
 }
 
-.price { color:#00ff88; }
+.price {
+    color:#00ff99;
+}
 
-/* CENTER */
-.center-box {
-    max-width:320px;
-    margin:0 auto;
+/* BUTTON */
+.buy {
+    margin-top:10px;
+    padding:10px;
+    width:100%;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:#fff;
+    font-weight:bold;
 }
 
 /* INPUT */
 input {
     width:100%;
-    padding:15px;
+    padding:12px;
     margin-top:10px;
+    border:none;
     border-radius:10px;
-    border:none;
-}
-
-/* BUTTON */
-.big-btn {
-    width:100%;
-    padding:15px;
-    margin-top:15px;
-    border:none;
-    border-radius:12px;
-    background:red;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    box-shadow:0 0 10px red;
-    transition:0.15s;
-    position:relative;
-    overflow:hidden;
-}
-
-.big-btn:active {
-    transform:scale(0.95);
-    box-shadow:0 0 5px red inset;
-}
-
-.big-btn::after {
-    content:"";
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:0;
-    height:0;
-    background:rgba(255,255,255,0.4);
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-    opacity:0;
-}
-
-.big-btn:active::after {
-    width:200px;
-    height:200px;
-    opacity:1;
-    transition:0.3s;
-}
-
-/* BACK */
-.back {
-    color:#aaa;
-    margin-bottom:10px;
-}
-
-/* MODAL */
-.modal {
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(0,0,0,0.8);
-    display:none;
-    justify-content:center;
-    align-items:center;
-}
-
-.modal-box {
-    background:#111;
-    padding:20px;
-    border-radius:15px;
-    width:80%;
-    text-align:center;
 }
 
 /* SUCCESS */
@@ -186,13 +151,13 @@ input {
 <body>
 
 <!-- HEADER -->
-<div id="header">
-<img src="https://i.imgur.com/6Iej2c3.jpg" class="top-img">
-<div class="title">🔥 ANAL SHOP 🔥</div>
+<div class="header">
+<img src="https://i.imgur.com/1n8YqYB.jpg">
+<div class="title">🔥 UC SHOP 🔥</div>
 </div>
 
 <!-- MAIN -->
-<div id="main" class="page active">
+<div id="main" class="container page active">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
 <div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
@@ -200,64 +165,53 @@ input {
 </div>
 
 <!-- UC -->
-<div id="uc" class="page">
+<div id="uc" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
-<h2>UC</h2>
 
 <div class="grid">
-<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button class="big-btn" onclick="buy('60 UC',75)">Купить</button></div>
-<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button class="big-btn" onclick="buy('325 UC',379)">Купить</button></div>
-<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button class="big-btn" onclick="buy('660 UC',749)">Купить</button></div>
-<div class="card"><h3>1800 UC</h3><div class="price">1890₽</div><button class="big-btn" onclick="buy('1800 UC',1890)">Купить</button></div>
+<div class="card">
+<h3>60 UC</h3>
+<div class="price">75₽</div>
+<button class="buy" onclick="buy('60 UC',75)">Купить</button>
 </div>
+
+<div class="card">
+<h3>325 UC</h3>
+<div class="price">379₽</div>
+<button class="buy" onclick="buy('325 UC',379)">Купить</button>
+</div>
+</div>
+
 </div>
 
 <!-- STEAM -->
-<div id="steam" class="page">
+<div id="steam" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<div class="center-box">
-<input type="number" id="steamSum" placeholder="Сумма">
-<input type="text" id="steamLogin" placeholder="Логин">
-<div id="result" style="margin-top:10px;"></div>
-<button class="big-btn" onclick="calcSteam()">Рассчитать</button>
-<button class="big-btn" onclick="buySteam()">Купить</button>
-</div>
+<input id="steamSum" placeholder="Сумма">
+<input id="steamLogin" placeholder="Логин">
+<button class="buy" onclick="buySteam()">Купить</button>
 </div>
 
 <!-- STARS -->
-<div id="stars" class="page">
+<div id="stars" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<div class="center-box">
-<h2>⭐ Stars</h2>
-<input type="number" id="starsAmount" placeholder="Количество">
-<button class="big-btn" onclick="buyStars()">Купить</button>
-</div>
+<input id="starsAmount" placeholder="Количество">
+<button class="buy" onclick="buyStars()">Купить</button>
 </div>
 
 <!-- KABINET -->
-<div id="kabinet" class="page">
+<div id="kabinet" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 <div id="kabinetData"></div>
 </div>
 
-<!-- MODAL -->
-<div id="modal" class="modal">
-<div class="modal-box">
-<h3>Введите PUBG ID</h3>
-<input id="pubgId">
-<button class="big-btn" onclick="confirmBuy()">OK</button>
-<button class="big-btn cancel" onclick="closeModal()">Отмена</button>
-</div>
-</div>
-
-<div id="success" class="success">✅ Покупка успешна</div>
+<div id="success" class="success">✅ Успешно</div>
 
 <script>
 
 let orders = JSON.parse(localStorage.getItem("orders")||"[]");
-let currentItem="", currentPrice=0;
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
@@ -267,71 +221,47 @@ if(p==="kabinet") loadKabinet();
 }
 
 function buy(item,price){
-currentItem=item;
-currentPrice=price;
-document.getElementById("modal").style.display="flex";
-}
-
-function confirmBuy(){
-let id=document.getElementById("pubgId").value;
-if(!id)return;
-
-orders.push({item:currentItem,price:currentPrice});
+orders.push({item,price});
 localStorage.setItem("orders",JSON.stringify(orders));
-
-showSuccess();
-closeModal();
-}
-
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
-
-function showSuccess(){
-let s=document.getElementById("success");
-s.style.display="block";
-setTimeout(()=>s.style.display="none",2000);
-}
-
-function loadKabinet(){
-let html="",total=0;
-orders.forEach(o=>{
-total+=o.price;
-html+=o.item+" - "+o.price+"₽<br>";
-});
-html+="<br>💰 Итого: "+total+"₽";
-document.getElementById("kabinetData").innerHTML=html;
-}
-
-/* STEAM */
-function calcSteam(){
-let sum=Number(document.getElementById("steamSum").value);
-if(!sum)return;
-document.getElementById("result").innerHTML="💰 Итого: "+Math.floor(sum*1.15)+"₽";
+show();
 }
 
 function buySteam(){
-let sum=Number(document.getElementById("steamSum").value);
+let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
+
 if(!sum||!login)return;
 
-let total=Math.floor(sum*1.15);
-
-orders.push({item:"Steam "+login,price:total});
+orders.push({item:"Steam "+login,price:sum});
 localStorage.setItem("orders",JSON.stringify(orders));
-
-showSuccess();
+show();
 }
 
-/* STARS */
 function buyStars(){
 let a=document.getElementById("starsAmount").value;
 if(!a)return;
 
 orders.push({item:"Stars "+a,price:a});
 localStorage.setItem("orders",JSON.stringify(orders));
+show();
+}
 
-showSuccess();
+function loadKabinet(){
+let html="",total=0;
+
+orders.forEach(o=>{
+total+=Number(o.price);
+html+=o.item+" - "+o.price+"₽<br>";
+});
+
+html+="<br>💰 Итого: "+total+"₽";
+document.getElementById("kabinetData").innerHTML=html;
+}
+
+function show(){
+let s=document.getElementById("success");
+s.style.display="block";
+setTimeout(()=>s.style.display="none",2000);
 }
 
 </script>
