@@ -2,31 +2,21 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<title>PUBG UC STORE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UC SHOP</title>
 
 <style>
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top, #1a0000, #000);
+  background: #0b0b0b;
   color: white;
-}
-
-/* HEADER */
-.header {
-  padding: 20px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  background: linear-gradient(90deg, #ff0000, #000);
-  box-shadow: 0 0 30px red;
 }
 
 /* HERO */
 .hero {
+  height: 100vh;
   position: relative;
-  height: 320px;
   overflow: hidden;
 }
 
@@ -34,205 +24,163 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.4);
-  animation: zoom 15s infinite alternate ease-in-out;
+  filter: brightness(0.4) blur(2px);
 }
 
-@keyframes zoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.15); }
-}
-
-.hero::after {
-  content: '';
+.overlay {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, #000, transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: fadeIn 1.5s ease;
 }
 
-.hero h1 {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  font-size: 30px;
-  text-shadow: 0 0 20px red;
+.overlay h1 {
+  font-size: 60px;
+  letter-spacing: 2px;
 }
 
-/* CONTENT */
-.container {
-  padding: 15px;
+.overlay p {
+  color: #ff3c3c;
+  font-size: 22px;
 }
 
+.overlay button {
+  margin-top: 25px;
+  padding: 14px 30px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #ff0000, #ff7300);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.overlay button:hover {
+  transform: scale(1.1);
+}
+
+/* STORE */
+.store {
+  display: none;
+  padding: 30px;
+  animation: fadeIn 1s ease;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
 .card {
+  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.05);
   border-radius: 20px;
   padding: 20px;
-  margin-bottom: 15px;
-  background: linear-gradient(135deg, #140000, #2b0000);
-  box-shadow: 0 0 20px rgba(255,0,0,0.3);
+  text-align: center;
   transition: 0.3s;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,0,0,0.3), transparent);
-  top: 0;
-  left: -100%;
-  transition: 0.5s;
-}
-
-.card:hover::before {
-  left: 100%;
-}
-
-.card:active {
-  transform: scale(0.97);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .card:hover {
-  box-shadow: 0 0 40px red;
+  transform: translateY(-10px) scale(1.05);
 }
 
-.card h2 {
-  margin: 0;
-}
-
-.card span {
-  color: #ff4d4d;
+.card h3 {
+  margin: 10px 0;
+  font-size: 22px;
 }
 
 .price {
-  margin-top: 10px;
+  color: #00ff99;
+  font-size: 18px;
 }
 
-/* UC MENU */
-.uc-menu {
-  display: none;
-  padding: 15px;
-}
-
-.uc-item {
-  background: #111;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px red;
-}
-
-button.buy {
-  margin-top: 10px;
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(90deg, red, darkred);
-  border: none;
-  color: white;
-  border-radius: 10px;
-  font-size: 16px;
-  transition: 0.2s;
-}
-
-button.buy:hover {
-  box-shadow: 0 0 20px red;
-}
-
-button.buy:active {
-  transform: scale(0.95);
-}
-
-/* BACK */
-.back {
+.card button {
   margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  background: #222;
+  padding: 10px 20px;
   border: none;
-  color: white;
   border-radius: 10px;
+  background: linear-gradient(45deg, #00cc66, #00ffcc);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
-/* FOOTER */
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: #111;
-  padding: 10px 0;
-  border-top: 1px solid #222;
+.card button:hover {
+  transform: scale(1.1);
 }
 
-.footer button {
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 14px;
-}
-
-.footer button:hover {
-  color: white;
+/* ANIMATION */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">🔥 ANAL UC SHOP 🔥</div>
-
+<!-- HERO -->
 <div class="hero">
-  <img src="ghost.png">
-  <h1>ANAL STORE</h1>
+  <img src="https://images.unsplash.com/photo-1605902711622-cfb43c4437d1?q=80&w=1400">
+  <div class="overlay">
+    <h1>PUBG STORE</h1>
+    <p>UC Packs Premium</p>
+    <button onclick="openStore()">Войти в магазин</button>
+  </div>
 </div>
 
-<div class="container" id="main">
+<!-- STORE -->
+<div class="store" id="store">
+  <div class="title">🔥 Популярные пакеты</div>
 
-<div class="card" onclick="openUC()">
-  <h2>PUBG MOBILE</h2>
-  <span>UC Packs</span>
-  <div class="price">Нажми чтобы открыть</div>
-</div>
+  <div class="grid">
+    <div class="card">
+      <h3>60 UC</h3>
+      <div class="price">₽75</div>
+      <button onclick="buy(75)">Купить</button>
+    </div>
 
-<div class="card">
-  <h2>FREE FIRE</h2>
-  <span>Diamonds</span>
-  <div class="price">100 💎 — 90₽</div>
-</div>
+    <div class="card">
+      <h3>325 UC</h3>
+      <div class="price">₽379</div>
+      <button onclick="buy(379)">Купить</button>
+    </div>
 
-</div>
+    <div class="card">
+      <h3>660 UC</h3>
+      <div class="price">₽749</div>
+      <button onclick="buy(749)">Купить</button>
+    </div>
 
-<div class="uc-menu" id="uc">
-  <div class="uc-item">60 UC — 80₽<button class="buy" onclick="buy(60)">Купить</button></div>
-  <div class="uc-item">325 UC — 390₽<button class="buy" onclick="buy(325)">Купить</button></div>
-  <div class="uc-item">660 UC — 800₽<button class="buy" onclick="buy(660)">Купить</button></div>
-  <button class="back" onclick="back()">⬅ Назад</button>
-</div>
-
-<div class="footer">
-  <button onclick="back()">🏠 Главная</button>
-  <button>🛒 Магазин</button>
-  <button>📦 Заказы</button>
-  <button>💬 Поддержка</button>
+    <div class="card">
+      <h3>1800 UC</h3>
+      <div class="price">₽1890</div>
+      <button onclick="buy(1890)">Купить</button>
+    </div>
+  </div>
 </div>
 
 <script>
-function openUC(){
-  document.getElementById('main').style.display='none';
-  document.getElementById('uc').style.display='block';
+function openStore() {
+  document.querySelector('.hero').style.display = 'none';
+  document.getElementById('store').style.display = 'block';
 }
 
-function back(){
-  document.getElementById('main').style.display='block';
-  document.getElementById('uc').style.display='none';
-}
-
-function buy(amount){
-  alert('Покупка ' + amount + ' UC (дальше подключим к боту)');
+function buy(price) {
+  alert("Оплата " + price + "₽ — подключи ЮKassa 💳");
 }
 </script>
 
