@@ -3,74 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 ANAL UC SHOP</title>
+<title>ANAL UC SHOP</title>
 
 <style>
-body {margin:0;font-family:Arial;background:#0a0000;color:white;}
-
-.header {
-    padding:20px;
-    text-align:center;
-    font-size:22px;
-    background:red;
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(180deg, #0a0000, #1a0000);
+    color: white;
 }
 
-/* страницы */
-.page {display:none;padding:15px;}
-.active {display:block;}
+/* HEADER */
+.header {
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(90deg, red, darkred);
+}
 
-/* кнопки */
-.section {
+/* PAGES */
+.page {
+    display: none;
+    padding: 15px;
+}
+
+.active {
+    display: block;
+}
+
+/* BUTTONS */
+.menu-btn {
     background:#111;
-    padding:20px;
+    padding:15px;
+    margin-top:10px;
     border-radius:15px;
-    margin-bottom:15px;
     text-align:center;
     box-shadow:0 0 10px red;
-    font-size:18px;
 }
 
-/* карточки */
+/* GRID */
 .grid {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .card {
-    background:#111;
-    padding:15px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 0 10px red;
+    background: #111;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 10px red;
 }
 
-.price {color:#00ff88;}
+.price {
+    color: #00ff88;
+    font-size: 18px;
+}
 
 button {
-    margin-top:10px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: white;
+    font-weight: bold;
+}
+
+/* BACK */
+.back {
+    margin-bottom: 10px;
+    color: #aaa;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-box {
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    width:80%;
+    text-align:center;
+    box-shadow:0 0 15px red;
+}
+
+.modal-box input {
     width:100%;
     padding:10px;
+    margin-top:10px;
     border:none;
     border-radius:10px;
-    background:red;
-    color:white;
 }
 
-/* кабинет */
-.kabinet {
-    background:#111;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:0 0 10px red;
-}
-
-/* назад */
-.back {
-    margin-bottom:10px;
-    display:block;
-    text-align:center;
-    color:#aaa;
+.cancel {
+    background:#555;
+    margin-top:5px;
 }
 </style>
 </head>
@@ -79,22 +121,19 @@ button {
 
 <div class="header">🔥 ANAL UC SHOP 🔥</div>
 
-<!-- ГЛАВНАЯ -->
-<div id="home" class="page active">
+<!-- MAIN -->
+<div id="main" class="page active">
 
-<h2>🎮 Разделы</h2>
-
-<div class="section" onclick="openPage('uc')">💎 PUBG UC</div>
-<div class="section" onclick="steam()">💻 Steam</div>
-<div class="section" onclick="stars()">⭐ Stars</div>
-<div class="section" onclick="openPage('kabinet')">👤 Личный кабинет</div>
+<div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
+<div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
+<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
+<div class="menu-btn" onclick="openPage('kabinet')">👤 Личный кабинет</div>
 
 </div>
 
-<!-- UC -->
+<!-- UC PAGE -->
 <div id="uc" class="page">
-
-<a class="back" onclick="openPage('home')">⬅ Назад</a>
+<div class="back" onclick="openPage('main')">← Назад</div>
 
 <h2>💎 PUBG UC</h2>
 
@@ -125,87 +164,82 @@ button {
 </div>
 
 </div>
-
 </div>
 
-<!-- КАБИНЕТ -->
+<!-- KABINET -->
 <div id="kabinet" class="page">
-
-<a class="back" onclick="openPage('home')">⬅ Назад</a>
+<div class="back" onclick="openPage('main')">← Назад</div>
 
 <h2>👤 Личный кабинет</h2>
+<div id="kabinetData"></div>
 
-<div class="kabinet" id="kabinetData">
-Загрузка...
 </div>
 
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <h3>Введите PUBG ID</h3>
+    <input type="text" id="pubgId" placeholder="Ваш ID">
+    <button onclick="confirmBuy()">Подтвердить</button>
+    <button onclick="closeModal()" class="cancel">Отмена</button>
+  </div>
 </div>
 
 <script>
 
-// ID пользователя
-let user_id = localStorage.getItem("user_id");
+let currentItem = "";
+let currentPrice = 0;
 
+let user_id = localStorage.getItem("user_id");
 if(!user_id){
-    user_id = prompt("Придумай свой ID (например: 12345)");
+    user_id = prompt("Придумай ID");
     localStorage.setItem("user_id", user_id);
 }
 
-// покупки
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let orders = JSON.parse(localStorage.getItem("orders") || "[]");
 
-// смена страницы
 function openPage(page){
     document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
+
     if(page === "kabinet") loadKabinet();
 }
 
-// покупка
 function buy(item, price){
-    let pubg = prompt("Введите PUBG ID:");
-    if(!pubg) return;
-
-    let order = {
-        item,
-        price,
-        date: new Date().toLocaleString()
-    };
-
-    orders.push(order);
-    localStorage.setItem("orders", JSON.stringify(orders));
-
-    alert("✅ Куплено: " + item);
-
+    currentItem = item;
+    currentPrice = price;
+    document.getElementById("modal").style.display = "flex";
 }
 
-// кабинет
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+function confirmBuy(){
+    let id = document.getElementById("pubgId").value;
+    if(!id) return alert("Введите ID");
+
+    orders.push({item: currentItem, price: currentPrice});
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    alert("✅ Покупка успешна");
+
+    closeModal();
+}
+
 function loadKabinet(){
-    let total = 0;
     let html = `<b>ID:</b> ${user_id}<br><br>`;
-    html += `<b>История:</b><br>`;
+    let total = 0;
 
     orders.forEach(o=>{
         total += o.price;
         html += `📦 ${o.item} — ${o.price}₽<br>`;
     });
 
-    html += `<br><b>💰 Всего потрачено: ${total}₽</b>`;
+    html += `<br><b>💰 Всего: ${total}₽</b>`;
 
     document.getElementById("kabinetData").innerHTML = html;
-}
-
-// остальные функции
-function steam(){
-    let sum = prompt("Сумма Steam:");
-    if(!sum) return;
-    alert("Steam заказ принят");
-}
-
-function stars(){
-    let amount = prompt("Stars:");
-    if(!amount) return;
-    alert("Stars заказ принят");
 }
 
 </script>
