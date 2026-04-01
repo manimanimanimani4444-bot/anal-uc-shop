@@ -3,249 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANAL UC SHOP</title>
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#000;
-color:#fff;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-/* PAGE */
-.page{display:none;}
-.page.active{display:block;}
-
-/* HEADER */
-.header{
-height:200px;
-}
-.header img{
-width:100%;
-height:100%;
-object-fit:cover;
+body {
+    background: url("https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg") no-repeat center/cover;
+    min-height: 100vh;
+    color: white;
 }
 
-/* CONTAINER */
-.container{
-padding:15px;
+/* затемнение */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
 }
 
-/* MENU */
-.menu-btn{
-background:#111;
-padding:15px;
-border-radius:15px;
-margin-top:10px;
-text-align:center;
-box-shadow:0 0 10px red;
+/* контейнер */
+.container {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
 }
 
-/* BACK */
-.back{
-margin-bottom:10px;
+/* заголовок */
+.title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px #00fff7;
 }
 
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:20px;
+/* карточки */
+.shop {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
 }
 
-/* CARD */
-.card{
-background:#111;
-border-radius:20px;
-padding:20px;
-text-align:center;
-box-shadow:0 0 15px red;
+/* стекло */
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(15px);
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-.price{
-color:#00ff88;
-font-size:18px;
-margin:10px 0;
+.card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 0 25px rgba(0,255,255,0.4);
 }
 
-/* BUTTON */
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-background:red;
-color:#fff;
-font-weight:bold;
+/* кнопка */
+.btn {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #00fff7, #0066ff);
+    color: black;
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 0 10px #00fff7;
 }
 
-button:active{
-transform:scale(0.95);
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00fff7, 0 0 40px #0066ff;
 }
 
-/* MODAL */
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.8);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:999;
+/* модалка */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+    z-index: 5;
 }
 
-.modal-box{
-background:#111;
-padding:20px;
-border-radius:20px;
-width:80%;
-box-shadow:0 0 20px red;
-text-align:center;
+.modal-content {
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    text-align: center;
+    animation: fade 0.3s ease;
 }
 
-.modal-box input{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-background:#000;
-color:#fff;
+@keyframes fade {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-.modal-box button{
-margin-top:10px;
+input {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: none;
+    width: 200px;
+}
+
+/* кнопки модалки */
+.modal button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #00fff7;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MAIN -->
-<div id="main" class="page active">
-
-<div class="header">
-<img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
-</div>
-
 <div class="container">
-<div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
-<div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
+    <div class="title">ANAL UC SHOP</div>
+
+    <div class="shop">
+        <div class="card">
+            <h2>60 UC</h2>
+            <p>1$</p>
+            <button class="btn" onclick="buy('60 UC')">Купить</button>
+        </div>
+
+        <div class="card">
+            <h2>325 UC</h2>
+            <p>5$</p>
+            <button class="btn" onclick="buy('325 UC')">Купить</button>
+        </div>
+
+        <div class="card">
+            <h2>660 UC</h2>
+            <p>10$</p>
+            <button class="btn" onclick="buy('660 UC')">Купить</button>
+        </div>
+    </div>
 </div>
 
-</div>
-
-<!-- UC -->
-<div id="uc" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>60 UC</h3>
-<div class="price">75₽</div>
-<button onclick="openModal('60 UC',75)">Купить</button>
-</div>
-
-<div class="card">
-<h3>325 UC</h3>
-<div class="price">379₽</div>
-<button onclick="openModal('325 UC',379)">Купить</button>
-</div>
-
-<div class="card">
-<h3>660 UC</h3>
-<div class="price">749₽</div>
-<button onclick="openModal('660 UC',749)">Купить</button>
-</div>
-
-<div class="card">
-<h3>1800 UC</h3>
-<div class="price">1990₽</div>
-<button onclick="openModal('1800 UC',1990)">Купить</button>
-</div>
-
-</div>
-</div>
-
-<!-- STEAM -->
-<div id="steam" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<input id="steamSum" placeholder="Сумма">
-<input id="steamLogin" placeholder="Логин">
-
-<button onclick="buySteam()">Купить</button>
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-<div class="modal-box">
-<h3>Введи PUBG ID</h3>
-<input id="pubgId" placeholder="Например: 5123456789">
-<button onclick="confirmBuy()">Подтвердить</button>
-<button onclick="closeModal()">Отмена</button>
-</div>
+<!-- модалка -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2>Введите ID</h2>
+        <input type="text" id="userId" placeholder="Ваш ID">
+        <br>
+        <button onclick="confirmBuy()">Оплатить</button>
+        <br>
+        <button onclick="closeModal()">Закрыть</button>
+    </div>
 </div>
 
 <script>
+let selectedProduct = "";
 
-let currentItem = "";
-let currentPrice = "";
-let orders = JSON.parse(localStorage.getItem("orders")||"[]");
-
-function openPage(p){
-document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
-document.getElementById(p).classList.add("active");
+function buy(product) {
+    selectedProduct = product;
+    document.getElementById("modal").style.display = "flex";
 }
 
-/* MODAL */
-function openModal(item,price){
-currentItem=item;
-currentPrice=price;
-document.getElementById("modal").style.display="flex";
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
 }
 
-function closeModal(){
-document.getElementById("modal").style.display="none";
+function confirmBuy() {
+    let id = document.getElementById("userId").value;
+
+    if (!id) {
+        alert("Введите ID");
+        return;
+    }
+
+    alert("Покупка: " + selectedProduct + "\\nID: " + id + "\\n(тут будет оплата)");
+    
+    closeModal();
 }
-
-/* CONFIRM */
-function confirmBuy(){
-let id=document.getElementById("pubgId").value;
-
-if(!id){
-alert("Введи ID");
-return;
-}
-
-orders.push({item:currentItem+" | ID:"+id,price:currentPrice});
-localStorage.setItem("orders",JSON.stringify(orders));
-
-closeModal();
-alert("✅ Куплено");
-}
-
-/* STEAM */
-function buySteam(){
-let sum=document.getElementById("steamSum").value;
-let login=document.getElementById("steamLogin").value;
-
-if(!sum||!login){
-alert("Заполни все поля");
-return;
-}
-
-orders.push({item:"Steam "+login,price:sum});
-localStorage.setItem("orders",JSON.stringify(orders));
-
-alert("✅ Куплено");
-}
-
 </script>
 
 </body>
