@@ -16,7 +16,7 @@ body {
 /* HEADER */
 .header {
     position:relative;
-    height:240px;
+    height:250px;
     overflow:hidden;
 }
 
@@ -26,48 +26,54 @@ body {
     object-fit:cover;
 }
 
-/* затемнение */
 .header::after {
     content:"";
     position:absolute;
-    top:0;left:0;
-    width:100%;height:100%;
+    width:100%;
+    height:100%;
     background:linear-gradient(to bottom, rgba(0,0,0,0.3), #000);
 }
 
-/* название */
+/* TITLE */
 .title {
     position:absolute;
     bottom:15px;
     width:100%;
     text-align:center;
-    font-size:26px;
+    font-size:28px;
     font-weight:bold;
 }
 
-/* контейнер */
+/* CONTAINER */
 .container {
     padding:15px;
-    margin-top:-20px;
+    margin-top:-30px;
 }
 
-/* кнопки */
+/* GLASS BUTTON */
 .menu-btn {
-    background:#0a0a0a;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.1);
     padding:18px;
     margin-top:15px;
     border-radius:20px;
     text-align:center;
     font-size:18px;
-    box-shadow:0 0 25px rgba(255,0,0,0.7);
-    transition:0.25s;
+    animation:glow 2s infinite alternate;
+}
+
+/* GLOW */
+@keyframes glow {
+    from { box-shadow:0 0 10px rgba(255,0,0,0.4); }
+    to { box-shadow:0 0 25px rgba(255,0,0,1); }
 }
 
 .menu-btn:active {
     transform:scale(0.95);
 }
 
-/* страницы */
+/* PAGE */
 .page {
     display:none;
     animation:fade 0.3s;
@@ -82,13 +88,7 @@ body {
     to {opacity:1; transform:translateX(0);}
 }
 
-/* назад */
-.back {
-    color:#aaa;
-    margin-bottom:10px;
-}
-
-/* карточки */
+/* GRID */
 .grid {
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -96,17 +96,17 @@ body {
 }
 
 .card {
-    background:#111;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
     padding:20px;
     border-radius:15px;
     text-align:center;
-    box-shadow:0 0 12px red;
+    animation:glow 2s infinite alternate;
 }
 
-.price {
-    color:#00ff88;
-}
+.price { color:#00ff88; }
 
+/* BUTTON */
 .buy {
     margin-top:10px;
     padding:10px;
@@ -116,9 +116,10 @@ body {
     background:red;
     color:white;
     font-weight:bold;
+    animation:glow 2s infinite alternate;
 }
 
-/* input */
+/* INPUT */
 input {
     width:100%;
     padding:12px;
@@ -127,7 +128,7 @@ input {
     border-radius:10px;
 }
 
-/* success */
+/* SUCCESS */
 .success {
     position:fixed;
     bottom:20px;
@@ -143,13 +144,11 @@ input {
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
-<img src="https://i.postimg.cc/fyrbqWmm/IMG-20260401-224620-436.jpg">
+<img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
 <div class="title">🔥 UC SHOP 🔥</div>
 </div>
 
-<!-- MAIN -->
 <div id="main" class="container page active">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
@@ -157,7 +156,6 @@ input {
 <div class="menu-btn" onclick="openPage('kabinet')">👤 Кабинет</div>
 </div>
 
-<!-- UC -->
 <div id="uc" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
@@ -176,7 +174,6 @@ input {
 </div>
 </div>
 
-<!-- STEAM -->
 <div id="steam" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
@@ -185,7 +182,6 @@ input {
 <button class="buy" onclick="buySteam()">Купить</button>
 </div>
 
-<!-- STARS -->
 <div id="stars" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
@@ -193,7 +189,6 @@ input {
 <button class="buy" onclick="buyStars()">Купить</button>
 </div>
 
-<!-- KABINET -->
 <div id="kabinet" class="container page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 <div id="kabinetData"></div>
@@ -221,7 +216,6 @@ show();
 function buySteam(){
 let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
-
 if(!sum||!login)return;
 
 orders.push({item:"Steam "+login,price:sum});
