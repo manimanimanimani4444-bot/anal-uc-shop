@@ -3,143 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UC Shop</title>
 
 <style>
 body {
-    margin: 0;
-    background: #0b0b0b;
-    color: white;
-    font-family: Arial;
-    text-align: center;
+    margin:0;
+    background:#000;
+    color:#fff;
+    font-family:Arial;
 }
 
-/* Шапка */
+/* HEADER */
 .header {
-    padding: 20px;
-    font-size: 28px;
-    font-weight: bold;
+    height:220px;
 }
 
-/* Контейнер */
+.header img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* CONTAINER */
 .container {
-    padding: 20px;
+    padding:15px;
 }
 
-/* Карточки */
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+/* GRID */
+.grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
 }
 
+/* CARD */
 .card {
-    background: #111;
-    padding: 20px;
-    border-radius: 15px;
-    width: 140px;
-    box-shadow: 0 0 20px red;
+    background:#111;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 0 20px red;
 }
 
 .price {
-    color: lime;
-    margin: 10px 0;
+    color:#00ff88;
 }
 
+/* BUTTON */
 button {
-    background: red;
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    color: white;
-    width: 100%;
-    cursor: pointer;
+    margin-top:10px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:#fff;
+    font-weight:bold;
+    box-shadow:0 0 15px red;
 }
 
-/* Поля */
+button:active {
+    transform:scale(0.95);
+}
+
+/* INPUT */
 input {
-    width: 85%;
-    padding: 12px;
-    margin: 10px;
-    border-radius: 10px;
-    border: none;
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
 }
 
-/* Результат */
-.result {
-    margin-top: 15px;
-    color: lime;
-    font-size: 16px;
+/* PAGE */
+.page { display:none; }
+.page.active { display:block; }
+
+/* BACK */
+.back {
+    margin-bottom:10px;
+}
+
+/* CLEAR BTN */
+.clear {
+    background:#555;
+    box-shadow:none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">UC SHOP</div>
+<div id="main" class="page active">
+
+<div class="header">
+<img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
+</div>
 
 <div class="container">
+<div class="grid">
 
-    <!-- Карточки -->
-    <div class="cards">
-        <div class="card">
-            <h3>60 UC</h3>
-            <div class="price">75₽</div>
-            <button onclick="selectUC(60)">Выбрать</button>
-        </div>
+<div class="card">
+<h3>60 UC</h3>
+<div class="price">75₽</div>
+<button onclick="buy('60 UC',75)">Купить</button>
+</div>
 
-        <div class="card">
-            <h3>325 UC</h3>
-            <div class="price">379₽</div>
-            <button onclick="selectUC(325)">Выбрать</button>
-        </div>
-    </div>
-
-    <!-- Ввод -->
-    <input type="text" id="id" placeholder="Введи ID">
-    <input type="number" id="amount" placeholder="Количество UC">
-
-    <button onclick="calculate()">Рассчитать</button>
-    <button onclick="buy()">Купить</button>
-
-    <div class="result" id="result"></div>
+<div class="card">
+<h3>325 UC</h3>
+<div class="price">379₽</div>
+<button onclick="buy('325 UC',379)">Купить</button>
+</div>
 
 </div>
 
+<button onclick="openPage('steam')">💻 Steam</button>
+<button onclick="openPage('kabinet')">👤 Кабинет</button>
+
+</div>
+</div>
+
+<!-- STEAM -->
+<div id="steam" class="page container">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<input id="sum" placeholder="Сумма">
+<input id="login" placeholder="Логин">
+
+<button onclick="buySteam()">Купить</button>
+</div>
+
+<!-- KABINET -->
+<div id="kabinet" class="page container">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<div id="list"></div>
+<br>
+<div id="total"></div>
+
+<button class="clear" onclick="clearOrders()">🗑 Очистить покупки</button>
+</div>
+
 <script>
-// выбор из карточек
-function selectUC(value) {
-    document.getElementById("amount").value = value;
+
+let orders = JSON.parse(localStorage.getItem("orders")||"[]");
+
+function openPage(p){
+document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
+document.getElementById(p).classList.add("active");
+
+if(p==="kabinet") load();
 }
 
-// расчёт
-function calculate() {
-    let uc = document.getElementById("amount").value;
+function buy(name,price){
+orders.push({name,price});
+localStorage.setItem("orders",JSON.stringify(orders));
 
-    if (!uc) {
-        alert("Введи количество UC");
-        return;
-    }
-
-    let price = uc * 1.2;
-    document.getElementById("result").innerText =
-        "Цена: " + price + " ₽";
+openPage('kabinet'); // ПЕРЕХОД
 }
 
-// покупка
-function buy() {
-    let id = document.getElementById("id").value;
-    let uc = document.getElementById("amount").value;
+function buySteam(){
+let sum=document.getElementById("sum").value;
+let login=document.getElementById("login").value;
 
-    if (!id || !uc) {
-        alert("Заполни все поля");
-        return;
-    }
+if(!sum||!login) return;
 
-    document.getElementById("result").innerText =
-        "✅ Заявка отправлена!\nID: " + id + "\nUC: " + uc;
+orders.push({name:"Steam "+login,price:sum});
+localStorage.setItem("orders",JSON.stringify(orders));
+
+openPage('kabinet');
 }
+
+function load(){
+let list="";
+let total=0;
+
+orders.forEach(o=>{
+list+=o.name+" - "+o.price+"₽<br>";
+total+=Number(o.price);
+});
+
+document.getElementById("list").innerHTML=list;
+document.getElementById("total").innerHTML="💰 Итого: "+total+"₽";
+}
+
+function clearOrders(){
+orders=[];
+localStorage.setItem("orders","[]");
+load();
+}
+
 </script>
 
 </body>
