@@ -3,25 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANAL UC SHOP</title>
+<title>UC SHOP</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: radial-gradient(circle at top, #1a0000, #000);
   color: white;
 }
 
+/* HEADER */
 .header {
   padding: 20px;
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-  background: linear-gradient(90deg, red, black);
-  box-shadow: 0 0 20px red;
+  background: linear-gradient(90deg, #ff0000, #000);
+  box-shadow: 0 0 30px red;
 }
 
+/* HERO */
 .hero {
   position: relative;
   height: 320px;
@@ -32,17 +34,32 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.7);
+  filter: brightness(0.4);
+  animation: zoom 15s infinite alternate ease-in-out;
+}
+
+@keyframes zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #000, transparent);
 }
 
 .hero h1 {
   position: absolute;
   bottom: 20px;
   left: 20px;
-  font-size: 28px;
-  text-shadow: 0 0 15px red;
+  font-size: 30px;
+  text-shadow: 0 0 20px red;
 }
 
+/* CONTENT */
 .container {
   padding: 15px;
 }
@@ -52,18 +69,38 @@ body {
   padding: 20px;
   margin-bottom: 15px;
   background: linear-gradient(135deg, #140000, #2b0000);
-  box-shadow: 0 0 25px rgba(255,0,0,0.3);
+  box-shadow: 0 0 20px rgba(255,0,0,0.3);
   transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,0,0,0.3), transparent);
+  top: 0;
+  left: -100%;
+  transition: 0.5s;
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.card:active {
+  transform: scale(0.97);
 }
 
 .card:hover {
-  transform: scale(1.03);
   box-shadow: 0 0 40px red;
 }
 
 .card h2 {
   margin: 0;
-  font-size: 22px;
 }
 
 .card span {
@@ -74,6 +111,52 @@ body {
   margin-top: 10px;
 }
 
+/* UC MENU */
+.uc-menu {
+  display: none;
+  padding: 15px;
+}
+
+.uc-item {
+  background: #111;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px red;
+}
+
+button.buy {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, red, darkred);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+button.buy:hover {
+  box-shadow: 0 0 20px red;
+}
+
+button.buy:active {
+  transform: scale(0.95);
+}
+
+/* BACK */
+.back {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background: #222;
+  border: none;
+  color: white;
+  border-radius: 10px;
+}
+
+/* FOOTER */
 .footer {
   position: fixed;
   bottom: 0;
@@ -82,32 +165,37 @@ body {
   justify-content: space-around;
   background: #111;
   padding: 10px 0;
+  border-top: 1px solid #222;
 }
 
 .footer button {
   background: none;
   border: none;
-  color: white;
+  color: #aaa;
   font-size: 14px;
 }
-</style>
 
+.footer button:hover {
+  color: white;
+}
+</style>
 </head>
+
 <body>
 
 <div class="header">🔥 ANAL UC SHOP 🔥</div>
 
 <div class="hero">
-  <img src="https://i.imgur.com/8Km9tLL.jpg">
-  <h1>SECRET STORE</h1>
+  <img src="ghost.png">
+  <h1>ANAL STORE</h1>
 </div>
 
-<div class="container">
+<div class="container" id="main">
 
-<div class="card">
+<div class="card" onclick="openUC()">
   <h2>PUBG MOBILE</h2>
   <span>UC Packs</span>
-  <div class="price">60 UC — 80₽</div>
+  <div class="price">Нажми чтобы открыть</div>
 </div>
 
 <div class="card">
@@ -116,26 +204,37 @@ body {
   <div class="price">100 💎 — 90₽</div>
 </div>
 
-<div class="card">
-  <h2>MOBILE LEGENDS</h2>
-  <span>Diamonds</span>
-  <div class="price">86 💎 — 120₽</div>
 </div>
 
-<div class="card">
-  <h2>GENSHIN IMPACT</h2>
-  <span>Crystals</span>
-  <div class="price">300 💎 — 350₽</div>
-</div>
-
+<div class="uc-menu" id="uc">
+  <div class="uc-item">60 UC — 80₽<button class="buy" onclick="buy(60)">Купить</button></div>
+  <div class="uc-item">325 UC — 390₽<button class="buy" onclick="buy(325)">Купить</button></div>
+  <div class="uc-item">660 UC — 800₽<button class="buy" onclick="buy(660)">Купить</button></div>
+  <button class="back" onclick="back()">⬅ Назад</button>
 </div>
 
 <div class="footer">
-  <button>🏠 Главная</button>
+  <button onclick="back()">🏠 Главная</button>
   <button>🛒 Магазин</button>
   <button>📦 Заказы</button>
   <button>💬 Поддержка</button>
 </div>
+
+<script>
+function openUC(){
+  document.getElementById('main').style.display='none';
+  document.getElementById('uc').style.display='block';
+}
+
+function back(){
+  document.getElementById('main').style.display='block';
+  document.getElementById('uc').style.display='none';
+}
+
+function buy(amount){
+  alert('Покупка ' + amount + ' UC (дальше подключим к боту)');
+}
+</script>
 
 </body>
 </html>
