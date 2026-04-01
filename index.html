@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANAL UC SHOP</title>
 
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #000;
+    color: white;
+}
+
+/* заголовок */
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin: 20px;
+}
+
+/* сетка */
+.shop {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px;
+}
+
+/* карточки */
+.card {
+    background: #111;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 20px red;
+}
+
+/* цена */
+.price {
+    color: #00ff88;
+    margin: 10px 0;
+}
+
+/* кнопка */
+.btn {
+    background: red;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+/* модалка */
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px red;
+}
+
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="title">ANAL UC SHOP</div>
+
+<div class="shop">
+    <div class="card">
+        <h2>60 UC</h2>
+        <div class="price">75₽</div>
+        <button class="btn" onclick="openModal('60 UC')">Купить</button>
+    </div>
+
+    <div class="card">
+        <h2>325 UC</h2>
+        <div class="price">379₽</div>
+        <button class="btn" onclick="openModal('325 UC')">Купить</button>
+    </div>
+
+    <div class="card">
+        <h2>660 UC</h2>
+        <div class="price">749₽</div>
+        <button class="btn" onclick="openModal('660 UC')">Купить</button>
+    </div>
+
+    <div class="card">
+        <h2>1800 UC</h2>
+        <div class="price">1990₽</div>
+        <button class="btn" onclick="openModal('1800 UC')">Купить</button>
+    </div>
+</div>
+
+<!-- МОДАЛКА -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h3>Введи PUBG ID</h3>
+        <input type="text" id="pubgId" placeholder="Например: 5123456789">
+        <br><br>
+        <button class="btn" onclick="buy()">OK</button>
+        <br><br>
+        <button class="btn" onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+
+<script>
+let selected = "";
+
+function openModal(product) {
+    selected = product;
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function buy() {
+    let id = document.getElementById("pubgId").value;
+
+    if (!id) {
+        alert("Введи ID");
+        return;
+    }
+
+    alert("Куплено: " + selected + "\\nID: " + id);
+
+    closeModal();
+}
+</script>
+
+</body>
+</html>
