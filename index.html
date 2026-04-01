@@ -12,11 +12,9 @@ background:#000;
 color:#fff;
 }
 
-/* PAGE */
 .page{display:none;}
 .page.active{display:block;}
 
-/* HEADER */
 .header{
 height:200px;
 overflow:hidden;
@@ -28,12 +26,8 @@ object-fit:cover;
 filter:brightness(0.6);
 }
 
-/* CONTAINER */
-.container{
-padding:15px;
-}
+.container{padding:15px;}
 
-/* MENU */
 .menu-btn{
 background:#111;
 padding:15px;
@@ -41,18 +35,10 @@ border-radius:15px;
 margin-top:10px;
 text-align:center;
 box-shadow:0 0 15px red;
-transition:0.2s;
-}
-.menu-btn:active{
-transform:scale(0.95);
 }
 
-/* BACK */
-.back{
-margin-bottom:10px;
-}
+.back{margin-bottom:10px;}
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -60,7 +46,6 @@ gap:12px;
 margin-top:20px;
 }
 
-/* CARD */
 .card{
 background:#111;
 border-radius:20px;
@@ -74,7 +59,6 @@ color:#00ff88;
 margin:10px 0;
 }
 
-/* BUTTON */
 button{
 width:100%;
 padding:12px;
@@ -86,11 +70,11 @@ font-weight:bold;
 box-shadow:0 0 10px red;
 margin-top:10px;
 }
+
 button:active{
 transform:scale(0.9);
 }
 
-/* INPUT */
 input{
 width:100%;
 padding:12px;
@@ -102,7 +86,6 @@ color:#fff;
 box-shadow:0 0 10px red inset;
 }
 
-/* MODAL */
 .modal{
 position:fixed;
 top:0;
@@ -123,29 +106,21 @@ border-radius:20px;
 width:85%;
 box-shadow:0 0 30px red;
 text-align:center;
-animation:pop 0.2s;
 }
 
-@keyframes pop{
-from{transform:scale(0.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-/* SUCCESS MODAL */
-.success{
-text-align:center;
+/* FIX ДЛЯ ТЕКСТА */
+.success-text{
+margin-top:10px;
+color:#ccc;
+word-wrap:break-word;
+overflow-wrap:break-word;
+word-break:break-word;
 }
 
 .success-icon{
 font-size:50px;
 color:#00ff88;
 text-shadow:0 0 15px #00ff88;
-margin-bottom:10px;
-}
-
-.success-text{
-margin-top:10px;
-color:#ccc;
 }
 </style>
 </head>
@@ -154,7 +129,6 @@ color:#ccc;
 
 <!-- MAIN -->
 <div id="main" class="page active">
-
 <div class="header">
 <img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
 </div>
@@ -162,8 +136,8 @@ color:#ccc;
 <div class="container">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
+<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
 </div>
-
 </div>
 
 <!-- UC -->
@@ -171,35 +145,29 @@ color:#ccc;
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
-
 <div class="card">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
-<button onclick="openModal('60 UC',75)">Купить</button>
+<button onclick="openModal('60 UC')">Купить</button>
 </div>
 
 <div class="card">
 <h3>325 UC</h3>
 <div class="price">379₽</div>
-<button onclick="openModal('325 UC',379)">Купить</button>
+<button onclick="openModal('325 UC')">Купить</button>
 </div>
-
-<div class="card">
-<h3>660 UC</h3>
-<div class="price">749₽</div>
-<button onclick="openModal('660 UC',749)">Купить</button>
-</div>
-
-<div class="card">
-<h3>1800 UC</h3>
-<div class="price">1990₽</div>
-<button onclick="openModal('1800 UC',1990)">Купить</button>
-</div>
-
 </div>
 </div>
 
-<!-- MODAL INPUT -->
+<!-- STARS -->
+<div id="stars" class="page container">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<input id="starsAmount" placeholder="Количество Stars">
+<button onclick="buyStars()">Купить</button>
+</div>
+
+<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>Введи PUBG ID</h3>
@@ -212,10 +180,10 @@ color:#ccc;
 
 <!-- SUCCESS -->
 <div id="success" class="modal">
-<div class="modal-box success">
+<div class="modal-box">
 <div class="success-icon">✔</div>
 <h3>Успешно!</h3>
-<div class="success-text" id="successText"></div>
+<div id="successText" class="success-text"></div>
 <button onclick="closeSuccess()">OK</button>
 </div>
 </div>
@@ -223,16 +191,14 @@ color:#ccc;
 <script>
 
 let currentItem="";
-let currentPrice="";
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 }
 
-function openModal(item,price){
+function openModal(item){
 currentItem=item;
-currentPrice=price;
 document.getElementById("modal").style.display="flex";
 }
 
@@ -240,7 +206,6 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-/* КРАСИВОЕ ПОДТВЕРЖДЕНИЕ */
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 
@@ -258,6 +223,20 @@ document.getElementById("successText").innerHTML =
 
 function closeSuccess(){
 document.getElementById("success").style.display="none";
+}
+
+/* STARS */
+function buyStars(){
+let amount=document.getElementById("starsAmount").value;
+
+if(!amount){
+alert("Введи количество");
+return;
+}
+
+document.getElementById("success").style.display="flex";
+document.getElementById("successText").innerHTML =
+"⭐ Куплено Stars: "+amount;
 }
 
 </script>
