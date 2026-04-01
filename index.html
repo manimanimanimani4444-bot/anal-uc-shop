@@ -13,7 +13,6 @@ body {
     color: white;
 }
 
-/* HEADER */
 .header {
     padding: 20px;
     text-align: center;
@@ -22,17 +21,9 @@ body {
     background: linear-gradient(90deg, red, darkred);
 }
 
-/* PAGES */
-.page {
-    display: none;
-    padding: 15px;
-}
+.page { display: none; padding: 15px; }
+.active { display: block; }
 
-.active {
-    display: block;
-}
-
-/* BUTTONS */
 .menu-btn {
     background:#111;
     padding:15px;
@@ -42,7 +33,6 @@ body {
     box-shadow:0 0 10px red;
 }
 
-/* GRID */
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -58,10 +48,7 @@ body {
     box-shadow: 0 0 10px red;
 }
 
-.price {
-    color: #00ff88;
-    font-size: 18px;
-}
+.price { color: #00ff88; font-size: 18px; }
 
 button {
     margin-top: 10px;
@@ -74,19 +61,13 @@ button {
     font-weight: bold;
 }
 
-/* BACK */
-.back {
-    margin-bottom: 10px;
-    color: #aaa;
-}
+.back { margin-bottom: 10px; color: #aaa; }
 
 /* MODAL */
 .modal {
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    top:0; left:0;
+    width:100%; height:100%;
     background: rgba(0,0,0,0.8);
     display:none;
     justify-content:center;
@@ -110,9 +91,19 @@ button {
     border-radius:10px;
 }
 
-.cancel {
-    background:#555;
-    margin-top:5px;
+.cancel { background:#555; }
+
+/* SUCCESS */
+.success {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00c853;
+    padding: 15px 25px;
+    border-radius: 10px;
+    display: none;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -123,56 +114,45 @@ button {
 
 <!-- MAIN -->
 <div id="main" class="page active">
-
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
 <div class="menu-btn" onclick="openPage('kabinet')">👤 Личный кабинет</div>
-
 </div>
 
-<!-- UC PAGE -->
+<!-- UC -->
 <div id="uc" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
-
 <h2>💎 PUBG UC</h2>
 
 <div class="grid">
-
-<div class="card">
-<h3>60 UC</h3>
-<div class="price">75₽</div>
-<button onclick="buy('60 UC',75)">Купить</button>
+<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button onclick="buy('60 UC',75)">Купить</button></div>
+<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button onclick="buy('325 UC',379)">Купить</button></div>
+<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button onclick="buy('660 UC',749)">Купить</button></div>
+<div class="card"><h3>1800 UC</h3><div class="price">1890₽</div><button onclick="buy('1800 UC',1890)">Купить</button></div>
+</div>
 </div>
 
-<div class="card">
-<h3>325 UC</h3>
-<div class="price">379₽</div>
-<button onclick="buy('325 UC',379)">Купить</button>
-</div>
+<!-- STEAM -->
+<div id="steam" class="page">
+<div class="back" onclick="openPage('main')">← Назад</div>
 
-<div class="card">
-<h3>660 UC</h3>
-<div class="price">749₽</div>
-<button onclick="buy('660 UC',749)">Купить</button>
-</div>
+<h2>💻 Пополнение Steam</h2>
 
-<div class="card">
-<h3>1800 UC</h3>
-<div class="price">1890₽</div>
-<button onclick="buy('1800 UC',1890)">Купить</button>
-</div>
+<input type="number" id="steamSum" placeholder="Введите сумму" style="width:100%;padding:10px;border-radius:10px;border:none;">
+<input type="text" id="steamLogin" placeholder="Ваш логин Steam" style="width:100%;padding:10px;border-radius:10px;border:none;margin-top:10px;">
 
-</div>
+<div id="result" style="margin-top:10px;"></div>
+
+<button onclick="calcSteam()">Рассчитать</button>
+<button onclick="buySteam()">Оплатить</button>
+
 </div>
 
 <!-- KABINET -->
 <div id="kabinet" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
-
 <h2>👤 Личный кабинет</h2>
 <div id="kabinetData"></div>
-
 </div>
 
 <!-- MODAL -->
@@ -185,6 +165,9 @@ button {
   </div>
 </div>
 
+<!-- SUCCESS -->
+<div id="success" class="success">✅ Покупка успешна</div>
+
 <script>
 
 let currentItem = "";
@@ -192,7 +175,7 @@ let currentPrice = 0;
 
 let user_id = localStorage.getItem("user_id");
 if(!user_id){
-    user_id = prompt("Придумай ID");
+    user_id = "user_" + Math.floor(Math.random()*100000);
     localStorage.setItem("user_id", user_id);
 }
 
@@ -217,15 +200,22 @@ function closeModal(){
 
 function confirmBuy(){
     let id = document.getElementById("pubgId").value;
-    if(!id) return alert("Введите ID");
+    if(!id) return;
 
     orders.push({item: currentItem, price: currentPrice});
-
     localStorage.setItem("orders", JSON.stringify(orders));
 
-    alert("✅ Покупка успешна");
-
+    showSuccess();
     closeModal();
+}
+
+function showSuccess(){
+    let el = document.getElementById("success");
+    el.style.display = "block";
+
+    setTimeout(()=>{
+        el.style.display = "none";
+    }, 2000);
 }
 
 function loadKabinet(){
@@ -240,6 +230,35 @@ function loadKabinet(){
     html += `<br><b>💰 Всего: ${total}₽</b>`;
 
     document.getElementById("kabinetData").innerHTML = html;
+}
+
+/* STEAM */
+function calcSteam(){
+    let sum = Number(document.getElementById("steamSum").value);
+    if(!sum) return;
+
+    let total = Math.floor(sum * 1.15);
+
+    document.getElementById("result").innerHTML =
+        "💰 К оплате: " + total + "₽";
+}
+
+function buySteam(){
+    let sum = Number(document.getElementById("steamSum").value);
+    let login = document.getElementById("steamLogin").value;
+
+    if(!sum || !login) return;
+
+    let total = Math.floor(sum * 1.15);
+
+    orders.push({
+        item: "Steam " + sum + "₽ (" + login + ")",
+        price: total
+    });
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    showSuccess();
 }
 
 </script>
