@@ -46,31 +46,12 @@ box-shadow:0 0 10px red;
 margin-bottom:10px;
 }
 
-/* INPUT BLOCK */
-.input-box{
-background:#111;
-padding:15px;
-border-radius:15px;
-margin-bottom:15px;
-box-shadow:0 0 10px red;
-}
-
-input{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-margin-top:10px;
-background:#000;
-color:#fff;
-}
-
 /* GRID */
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:12px;
-margin-top:20px; /* 👈 опустили ниже */
+margin-top:20px;
 }
 
 /* CARD */
@@ -102,6 +83,43 @@ font-weight:bold;
 button:active{
 transform:scale(0.95);
 }
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.modal-box{
+background:#111;
+padding:20px;
+border-radius:20px;
+width:80%;
+box-shadow:0 0 20px red;
+text-align:center;
+}
+
+.modal-box input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#000;
+color:#fff;
+}
+
+.modal-box button{
+margin-top:10px;
+}
 </style>
 </head>
 
@@ -117,7 +135,6 @@ transform:scale(0.95);
 <div class="container">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('kabinet')">👤 Кабинет</div>
 </div>
 
 </div>
@@ -126,36 +143,30 @@ transform:scale(0.95);
 <div id="uc" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<!-- ВВОД ID -->
-<div class="input-box">
-Введи PUBG ID:
-<input id="pubgId" placeholder="Например: 5123456789">
-</div>
-
 <div class="grid">
 
 <div class="card">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
-<button onclick="buy('60 UC',75)">Купить</button>
+<button onclick="openModal('60 UC',75)">Купить</button>
 </div>
 
 <div class="card">
 <h3>325 UC</h3>
 <div class="price">379₽</div>
-<button onclick="buy('325 UC',379)">Купить</button>
+<button onclick="openModal('325 UC',379)">Купить</button>
 </div>
 
 <div class="card">
 <h3>660 UC</h3>
 <div class="price">749₽</div>
-<button onclick="buy('660 UC',749)">Купить</button>
+<button onclick="openModal('660 UC',749)">Купить</button>
 </div>
 
 <div class="card">
 <h3>1800 UC</h3>
 <div class="price">1990₽</div>
-<button onclick="buy('1800 UC',1990)">Купить</button>
+<button onclick="openModal('1800 UC',1990)">Купить</button>
 </div>
 
 </div>
@@ -171,39 +182,52 @@ transform:scale(0.95);
 <button onclick="buySteam()">Купить</button>
 </div>
 
-<!-- KABINET -->
-<div id="kabinet" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<div id="list"></div>
-<br>
-<div id="total"></div>
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-box">
+<h3>Введи PUBG ID</h3>
+<input id="pubgId" placeholder="Например: 5123456789">
+<button onclick="confirmBuy()">Подтвердить</button>
+<button onclick="closeModal()">Отмена</button>
+</div>
 </div>
 
 <script>
 
+let currentItem = "";
+let currentPrice = "";
 let orders = JSON.parse(localStorage.getItem("orders")||"[]");
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
-
-if(p==="kabinet") load();
 }
 
-/* UC */
-function buy(item,price){
+/* MODAL */
+function openModal(item,price){
+currentItem=item;
+currentPrice=price;
+document.getElementById("modal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+/* CONFIRM */
+function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 
 if(!id){
-alert("Введи PUBG ID");
+alert("Введи ID");
 return;
 }
 
-orders.push({item:item+" | ID:"+id,price});
+orders.push({item:currentItem+" | ID:"+id,price:currentPrice});
 localStorage.setItem("orders",JSON.stringify(orders));
 
-openPage('kabinet');
+closeModal();
+alert("✅ Куплено");
 }
 
 /* STEAM */
@@ -219,20 +243,7 @@ return;
 orders.push({item:"Steam "+login,price:sum});
 localStorage.setItem("orders",JSON.stringify(orders));
 
-openPage('kabinet');
-}
-
-/* LOAD */
-function load(){
-let html="",total=0;
-
-orders.forEach(o=>{
-html+=o.item+" - "+o.price+"₽<br>";
-total+=Number(o.price);
-});
-
-document.getElementById("list").innerHTML=html;
-document.getElementById("total").innerHTML="💰 Итого: "+total+"₽";
+alert("✅ Куплено");
 }
 
 </script>
