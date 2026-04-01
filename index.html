@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UC SHOP</title>
 
 <style>
 body {
@@ -15,77 +14,31 @@ body {
 
 /* HEADER */
 .header {
-    position:relative;
-    height:250px;
-    overflow:hidden;
+    height:220px;
 }
-
 .header img {
     width:100%;
     height:100%;
     object-fit:cover;
 }
 
-.header::after {
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:linear-gradient(to bottom, rgba(0,0,0,0.3), #000);
-}
-
-/* TITLE */
-.title {
-    position:absolute;
-    bottom:15px;
-    width:100%;
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-}
+/* PAGE */
+.page { display:none; }
+.page.active { display:block; }
 
 /* CONTAINER */
 .container {
     padding:15px;
-    margin-top:-30px;
 }
 
-/* GLASS BUTTON */
+/* MENU */
 .menu-btn {
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,0.1);
-    padding:18px;
-    margin-top:15px;
-    border-radius:20px;
+    background:#111;
+    padding:15px;
+    border-radius:15px;
+    margin-top:10px;
     text-align:center;
-    font-size:18px;
-    animation:glow 2s infinite alternate;
-}
-
-/* GLOW */
-@keyframes glow {
-    from { box-shadow:0 0 10px rgba(255,0,0,0.4); }
-    to { box-shadow:0 0 25px rgba(255,0,0,1); }
-}
-
-.menu-btn:active {
-    transform:scale(0.95);
-}
-
-/* PAGE */
-.page {
-    display:none;
-    animation:fade 0.3s;
-}
-
-.page.active {
-    display:block;
-}
-
-@keyframes fade {
-    from {opacity:0; transform:translateX(20px);}
-    to {opacity:1; transform:translateX(0);}
+    box-shadow:0 0 15px red;
 }
 
 /* GRID */
@@ -95,28 +48,32 @@ body {
     gap:12px;
 }
 
+/* CARD */
 .card {
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(10px);
+    background:#111;
+    border-radius:20px;
     padding:20px;
-    border-radius:15px;
     text-align:center;
-    animation:glow 2s infinite alternate;
+    box-shadow:0 0 20px red;
 }
 
 .price { color:#00ff88; }
 
 /* BUTTON */
-.buy {
+button {
     margin-top:10px;
-    padding:10px;
     width:100%;
+    padding:12px;
     border:none;
     border-radius:10px;
     background:red;
     color:white;
     font-weight:bold;
-    animation:glow 2s infinite alternate;
+    box-shadow:0 0 15px red;
+}
+
+button:active {
+    transform:scale(0.95);
 }
 
 /* INPUT */
@@ -128,73 +85,111 @@ input {
     border-radius:10px;
 }
 
-/* SUCCESS */
-.success {
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#00c853;
-    padding:10px 20px;
-    border-radius:10px;
-    display:none;
+/* LOADER */
+.loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:999;
+}
+
+.spinner{
+width:60px;
+height:60px;
+border:5px solid #333;
+border-top:5px solid red;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:15px;
+}
+
+@keyframes spin{
+to{ transform:rotate(360deg); }
 }
 </style>
 </head>
 
 <body>
 
+<!-- MAIN -->
+<div id="main" class="page active">
+
 <div class="header">
 <img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
-<div class="title">🔥 UC SHOP 🔥</div>
 </div>
 
-<div id="main" class="container page active">
+<div class="container">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
 <div class="menu-btn" onclick="openPage('kabinet')">👤 Кабинет</div>
 </div>
 
-<div id="uc" class="container page">
-<div class="back" onclick="openPage('main')">← Назад</div>
+</div>
+
+<!-- UC -->
+<div id="uc" class="page container">
+<div onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
+
 <div class="card">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
-<button class="buy" onclick="buy('60 UC',75)">Купить</button>
+<button onclick="buy('60 UC',75)">Купить</button>
 </div>
 
 <div class="card">
 <h3>325 UC</h3>
 <div class="price">379₽</div>
-<button class="buy" onclick="buy('325 UC',379)">Купить</button>
+<button onclick="buy('325 UC',379)">Купить</button>
 </div>
+
+<div class="card">
+<h3>660 UC</h3>
+<div class="price">749₽</div>
+<button onclick="buy('660 UC',749)">Купить</button>
+</div>
+
+<div class="card">
+<h3>1800 UC</h3>
+<div class="price">1990₽</div>
+<button onclick="buy('1800 UC',1990)">Купить</button>
+</div>
+
 </div>
 </div>
 
-<div id="steam" class="container page">
-<div class="back" onclick="openPage('main')">← Назад</div>
+<!-- STEAM -->
+<div id="steam" class="page container">
+<div onclick="openPage('main')">← Назад</div>
 
 <input id="steamSum" placeholder="Сумма">
 <input id="steamLogin" placeholder="Логин">
-<button class="buy" onclick="buySteam()">Купить</button>
+
+<button onclick="buySteam()">Купить</button>
 </div>
 
-<div id="stars" class="container page">
-<div class="back" onclick="openPage('main')">← Назад</div>
+<!-- KABINET -->
+<div id="kabinet" class="page container">
+<div onclick="openPage('main')">← Назад</div>
 
-<input id="starsAmount" placeholder="Количество">
-<button class="buy" onclick="buyStars()">Купить</button>
+<div id="list"></div>
+<br>
+<div id="total"></div>
 </div>
 
-<div id="kabinet" class="container page">
-<div class="back" onclick="openPage('main')">← Назад</div>
-<div id="kabinetData"></div>
+<!-- LOADER -->
+<div id="loader" class="loader">
+<div class="spinner"></div>
+<div id="loaderText">Обработка заказа...</div>
 </div>
-
-<div id="success" class="success">✅ Успешно</div>
 
 <script>
 
@@ -204,50 +199,68 @@ function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 
-if(p==="kabinet") loadKabinet();
+if(p==="kabinet") load();
 }
 
+/* ОБРАБОТКА */
+function processOrder(callback){
+let loader=document.getElementById("loader");
+let text=document.getElementById("loaderText");
+
+loader.style.display="flex";
+text.innerText="Обработка заказа...";
+
+setTimeout(()=>{
+text.innerText="Проверка оплаты...";
+
+setTimeout(()=>{
+text.innerText="Успешно ✅";
+
+setTimeout(()=>{
+loader.style.display="none";
+callback();
+},1000);
+
+},1500);
+
+},1500);
+}
+
+/* UC */
 function buy(item,price){
-orders.push({item,price});
+let id = prompt("Введи PUBG ID:");
+if(!id) return;
+
+orders.push({item:item+" | ID:"+id,price});
 localStorage.setItem("orders",JSON.stringify(orders));
-show();
+
+processOrder(()=>openPage('kabinet'));
 }
 
+/* STEAM */
 function buySteam(){
 let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
+
 if(!sum||!login)return;
 
 orders.push({item:"Steam "+login,price:sum});
 localStorage.setItem("orders",JSON.stringify(orders));
-show();
+
+processOrder(()=>openPage('kabinet'));
 }
 
-function buyStars(){
-let a=document.getElementById("starsAmount").value;
-if(!a)return;
-
-orders.push({item:"Stars "+a,price:a});
-localStorage.setItem("orders",JSON.stringify(orders));
-show();
-}
-
-function loadKabinet(){
+/* LOAD */
+function load(){
 let html="",total=0;
 
 orders.forEach(o=>{
-total+=Number(o.price);
 html+=o.item+" - "+o.price+"₽<br>";
+total+=Number(o.price);
 });
 
-html+="<br>💰 Итого: "+total+"₽";
-document.getElementById("kabinetData").innerHTML=html;
-}
-
-function show(){
-let s=document.getElementById("success");
-s.style.display="block";
-setTimeout(()=>s.style.display="none",2000);
+document.getElementById("list").innerHTML=html;
+document.getElementById("total").innerHTML="💰 Итого: "+total+"₽";
 }
 
 </script>
