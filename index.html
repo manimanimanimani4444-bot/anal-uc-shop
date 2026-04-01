@@ -14,7 +14,7 @@ body {
 }
 
 /* HEADER */
-.header {
+#header {
     display:block;
 }
 
@@ -32,46 +32,122 @@ body {
     font-weight:bold;
 }
 
-/* PAGE */
-.page { display:none; padding:15px; }
-.active { display:block; }
-
-.menu-btn {
-    background:#111;
+/* PAGE АНИМАЦИИ */
+.page {
+    position:absolute;
+    width:100%;
+    top:0;
+    left:0;
     padding:15px;
-    margin-top:10px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 0 10px red;
+    opacity:0;
+    transform:translateX(50px);
+    pointer-events:none;
+    transition:0.4s;
 }
 
+.page.active {
+    opacity:1;
+    transform:translateX(0);
+    pointer-events:auto;
+}
+
+/* МЕНЮ */
+.menu-btn {
+    background:#111;
+    padding:18px;
+    margin-top:12px;
+    border-radius:15px;
+    text-align:center;
+    font-size:18px;
+    box-shadow:0 0 12px red;
+    transition:0.2s;
+}
+
+.menu-btn:active {
+    transform:scale(0.95);
+    box-shadow:0 0 5px red inset;
+}
+
+/* GRID */
 .grid {
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:10px;
+    gap:12px;
 }
 
 .card {
     background:#111;
-    padding:15px;
+    padding:20px;
     border-radius:15px;
     text-align:center;
-    box-shadow:0 0 10px red;
+    box-shadow:0 0 12px red;
 }
 
 .price { color:#00ff88; }
 
-button {
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border:none;
-    border-radius:10px;
-    background:red;
-    color:white;
+/* CENTER */
+.center-box {
+    max-width:320px;
+    margin:0 auto;
 }
 
-.back { color:#aaa; margin-bottom:10px; }
+/* INPUT */
+input {
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border-radius:10px;
+    border:none;
+}
+
+/* КНОПКИ */
+.big-btn {
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    background:red;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    box-shadow:0 0 10px red;
+    transition:0.15s;
+    position:relative;
+    overflow:hidden;
+}
+
+.big-btn:active {
+    transform:scale(0.95);
+    box-shadow:0 0 5px red inset;
+}
+
+/* ВСПЫШКА */
+.big-btn::after {
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:0;
+    height:0;
+    background:rgba(255,255,255,0.4);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    opacity:0;
+}
+
+.big-btn:active::after {
+    width:200px;
+    height:200px;
+    opacity:1;
+    transition:0.3s;
+}
+
+/* BACK */
+.back {
+    color:#aaa;
+    margin-bottom:10px;
+}
 
 /* MODAL */
 .modal {
@@ -92,16 +168,6 @@ button {
     text-align:center;
 }
 
-.modal-box input {
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border-radius:10px;
-    border:none;
-}
-
-.cancel { background:#555; }
-
 /* SUCCESS */
 .success {
     position:fixed;
@@ -119,8 +185,8 @@ button {
 <body>
 
 <!-- HEADER -->
-<div id="header" class="header">
-<img src="https://picsum.photos/800/300" class="top-img">
+<div id="header">
+<img src="https://i.imgur.com/6Iej2c3.jpg" class="top-img">
 <div class="title">🔥 ANAL SHOP 🔥</div>
 </div>
 
@@ -138,10 +204,10 @@ button {
 <h2>UC</h2>
 
 <div class="grid">
-<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button onclick="buy('60 UC',75)">Купить</button></div>
-<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button onclick="buy('325 UC',379)">Купить</button></div>
-<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button onclick="buy('660 UC',749)">Купить</button></div>
-<div class="card"><h3>1800 UC</h3><div class="price">1890₽</div><button onclick="buy('1800 UC',1890)">Купить</button></div>
+<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button class="big-btn" onclick="buy('60 UC',75)">Купить</button></div>
+<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button class="big-btn" onclick="buy('325 UC',379)">Купить</button></div>
+<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button class="big-btn" onclick="buy('660 UC',749)">Купить</button></div>
+<div class="card"><h3>1800 UC</h3><div class="price">1890₽</div><button class="big-btn" onclick="buy('1800 UC',1890)">Купить</button></div>
 </div>
 </div>
 
@@ -149,23 +215,24 @@ button {
 <div id="steam" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
+<div class="center-box">
 <input type="number" id="steamSum" placeholder="Сумма">
 <input type="text" id="steamLogin" placeholder="Логин">
-
-<div id="result"></div>
-
-<button onclick="calcSteam()">Рассчитать</button>
-<button onclick="buySteam()">Купить</button>
+<div id="result" style="margin-top:10px;"></div>
+<button class="big-btn" onclick="calcSteam()">Рассчитать</button>
+<button class="big-btn" onclick="buySteam()">Купить</button>
+</div>
 </div>
 
 <!-- STARS -->
 <div id="stars" class="page">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
+<div class="center-box">
 <h2>⭐ Stars</h2>
-<input type="number" id="starsAmount" placeholder="Сколько">
-<button onclick="buyStars()">Купить</button>
-
+<input type="number" id="starsAmount" placeholder="Количество">
+<button class="big-btn" onclick="buyStars()">Купить</button>
+</div>
 </div>
 
 <!-- KABINET -->
@@ -179,12 +246,12 @@ button {
 <div class="modal-box">
 <h3>Введите PUBG ID</h3>
 <input id="pubgId">
-<button onclick="confirmBuy()">OK</button>
-<button onclick="closeModal()" class="cancel">Отмена</button>
+<button class="big-btn" onclick="confirmBuy()">OK</button>
+<button class="big-btn" onclick="closeModal()">Отмена</button>
 </div>
 </div>
 
-<div id="success" class="success">✅ Успешно</div>
+<div id="success" class="success">✅ Покупка успешна</div>
 
 <script>
 
@@ -193,16 +260,19 @@ let currentItem="", currentPrice=0;
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
-document.getElementById(p).classList.add("active");
 
-/* СКРЫТИЕ ШАПКИ */
-if(p === "main"){
-    document.getElementById("header").style.display="block";
+setTimeout(()=>{
+document.getElementById(p).classList.add("active");
+},50);
+
+/* HEADER */
+if(p==="main"){
+document.getElementById("header").style.display="block";
 }else{
-    document.getElementById("header").style.display="none";
+document.getElementById("header").style.display="none";
 }
 
-if(p=="kabinet") loadKabinet();
+if(p==="kabinet") loadKabinet();
 }
 
 function buy(item,price){
@@ -236,9 +306,9 @@ function loadKabinet(){
 let html="",total=0;
 orders.forEach(o=>{
 total+=o.price;
-html+=o.item+" "+o.price+"₽<br>";
+html+=o.item+" - "+o.price+"₽<br>";
 });
-html+="<br>💰 "+total+"₽";
+html+="<br>💰 Итого: "+total+"₽";
 document.getElementById("kabinetData").innerHTML=html;
 }
 
@@ -246,7 +316,7 @@ document.getElementById("kabinetData").innerHTML=html;
 function calcSteam(){
 let sum=Number(document.getElementById("steamSum").value);
 if(!sum)return;
-document.getElementById("result").innerHTML="Итого: "+Math.floor(sum*1.15)+"₽";
+document.getElementById("result").innerHTML="💰 Итого: "+Math.floor(sum*1.15)+"₽";
 }
 
 function buySteam(){
