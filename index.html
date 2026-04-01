@@ -84,6 +84,7 @@ background:red;
 color:#fff;
 font-weight:bold;
 box-shadow:0 0 10px red;
+margin-top:10px;
 }
 button:active{
 transform:scale(0.9);
@@ -125,13 +126,26 @@ text-align:center;
 animation:pop 0.2s;
 }
 
-.modal-box button{
-margin-top:12px; /* расстояние между кнопками */
-}
-
 @keyframes pop{
 from{transform:scale(0.7);opacity:0;}
 to{transform:scale(1);opacity:1;}
+}
+
+/* SUCCESS MODAL */
+.success{
+text-align:center;
+}
+
+.success-icon{
+font-size:50px;
+color:#00ff88;
+text-shadow:0 0 15px #00ff88;
+margin-bottom:10px;
+}
+
+.success-text{
+margin-top:10px;
+color:#ccc;
 }
 </style>
 </head>
@@ -148,7 +162,6 @@ to{transform:scale(1);opacity:1;}
 <div class="container">
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
 </div>
 
 </div>
@@ -186,26 +199,7 @@ to{transform:scale(1);opacity:1;}
 </div>
 </div>
 
-<!-- STEAM -->
-<div id="steam" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<input id="steamSum" placeholder="Сумма">
-<input id="steamLogin" placeholder="Логин">
-
-<button onclick="buySteam()">Купить</button>
-</div>
-
-<!-- STARS -->
-<div id="stars" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<input id="starsAmount" placeholder="Количество Stars">
-
-<button onclick="buyStars()">Купить</button>
-</div>
-
-<!-- MODAL -->
+<!-- MODAL INPUT -->
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>Введи PUBG ID</h3>
@@ -213,6 +207,16 @@ to{transform:scale(1);opacity:1;}
 
 <button onclick="confirmBuy()">Подтвердить</button>
 <button onclick="closeModal()">Отмена</button>
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="modal">
+<div class="modal-box success">
+<div class="success-icon">✔</div>
+<h3>Успешно!</h3>
+<div class="success-text" id="successText"></div>
+<button onclick="closeSuccess()">OK</button>
 </div>
 </div>
 
@@ -236,7 +240,7 @@ function closeModal(){
 document.getElementById("modal").style.display="none";
 }
 
-/* ПОДТВЕРЖДЕНИЕ */
+/* КРАСИВОЕ ПОДТВЕРЖДЕНИЕ */
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 
@@ -245,39 +249,15 @@ alert("Введи ID");
 return;
 }
 
-let confirmId = confirm("Это точно ваш ID?\n\n" + id);
-
-if(!confirmId) return;
-
 closeModal();
-alert("✅ Куплено: "+currentItem+"\nID: "+id);
+
+document.getElementById("success").style.display="flex";
+document.getElementById("successText").innerHTML =
+"Куплено: "+currentItem+"<br>ID: "+id;
 }
 
-/* STEAM */
-function buySteam(){
-let sum=document.getElementById("steamSum").value;
-let login=document.getElementById("steamLogin").value;
-
-if(!sum||!login){
-alert("Заполни все поля");
-return;
-}
-
-let total=Math.round(sum*1.15);
-
-alert("💻 Steam\nЛогин: "+login+"\nСумма: "+total+"₽");
-}
-
-/* STARS */
-function buyStars(){
-let amount=document.getElementById("starsAmount").value;
-
-if(!amount){
-alert("Введи количество");
-return;
-}
-
-alert("⭐ Куплено Stars: "+amount);
+function closeSuccess(){
+document.getElementById("success").style.display="none";
 }
 
 </script>
