@@ -10,6 +10,7 @@ margin:0;
 font-family:Arial;
 background:#000;
 color:#fff;
+overflow-x:hidden;
 }
 
 /* PAGE */
@@ -25,36 +26,43 @@ opacity:1;
 transform:translateY(0);
 }
 
+/* HEADER УБРАЛИ */
+
+/* CONTAINER */
 .container{
 padding:15px;
 }
 
-/* НОВЫЙ МЕНЮ БЛОК */
+/* 🔥 НОВЫЕ БАННЕРЫ */
 .menu-block{
+position:relative;
 margin-top:20px;
-}
-
-.menu-title{
-font-size:22px;
-padding:20px;
-text-align:center;
-border-radius:15px;
-border:1px solid #333;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(5px);
-margin-bottom:10px;
-transition:0.2s;
-}
-.menu-title:active{
-transform:scale(0.95);
 }
 
 .menu-img{
 width:100%;
-height:140px;
+height:180px;
 object-fit:cover;
-border-radius:15px;
-opacity:0.8;
+border-radius:20px;
+filter:brightness(0.6);
+}
+
+/* 🔥 КНОПКА ПОВЕРХ */
+.menu-btn{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+padding:18px 40px;
+border-radius:20px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.2);
+font-size:20px;
+}
+
+.menu-btn:active{
+transform:translate(-50%,-50%) scale(0.9);
 }
 
 /* BACK */
@@ -79,10 +87,6 @@ border-radius:18px;
 padding:20px;
 text-align:center;
 border:1px solid #222;
-transition:0.2s;
-}
-.card:hover{
-transform:translateY(-5px);
 }
 
 .price{
@@ -101,7 +105,6 @@ background:#ff2a2a;
 color:#fff;
 font-weight:bold;
 margin-top:12px;
-transition:0.2s;
 }
 button:active{
 transform:scale(0.92);
@@ -160,19 +163,22 @@ color:#ccc;
 <div id="main" class="page active">
 <div class="container">
 
+<!-- PUBG -->
 <div class="menu-block" onclick="openPage('uc')">
-<div class="menu-title">💎 PUBG UC</div>
 <img class="menu-img" src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
+<div class="menu-btn">💎 PUBG UC</div>
 </div>
 
+<!-- STEAM -->
 <div class="menu-block" onclick="openPage('steam')">
-<div class="menu-title">💻 Steam</div>
-<img class="menu-img" src="https://i.postimg.cc/3x7r9G0p/steam.jpg">
+<img class="menu-img" src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
+<div class="menu-btn">💻 Steam</div>
 </div>
 
+<!-- STARS -->
 <div class="menu-block" onclick="openPage('stars')">
-<div class="menu-title">⭐ Stars</div>
-<img class="menu-img" src="https://i.postimg.cc/zf4G3YfR/stars.jpg">
+<img class="menu-img" src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
+<div class="menu-btn">⭐ Stars</div>
 </div>
 
 </div>
