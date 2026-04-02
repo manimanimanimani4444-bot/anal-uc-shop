@@ -10,7 +10,6 @@ margin:0;
 font-family:Arial;
 background:#000;
 color:#fff;
-overflow-x:hidden;
 }
 
 /* PAGE */
@@ -26,35 +25,36 @@ opacity:1;
 transform:translateY(0);
 }
 
-/* HEADER */
-.header{
-height:200px;
-overflow:hidden;
-}
-.header img{
-width:100%;
-height:100%;
-object-fit:cover;
-filter:brightness(0.7);
-}
-
-/* CONTAINER */
 .container{
 padding:15px;
 }
 
-/* MENU */
-.menu-btn{
-background:#111;
-padding:15px;
-border-radius:15px;
-margin-top:12px;
+/* НОВЫЙ МЕНЮ БЛОК */
+.menu-block{
+margin-top:20px;
+}
+
+.menu-title{
+font-size:22px;
+padding:20px;
 text-align:center;
-border:1px solid #222;
+border-radius:15px;
+border:1px solid #333;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(5px);
+margin-bottom:10px;
 transition:0.2s;
 }
-.menu-btn:active{
+.menu-title:active{
 transform:scale(0.95);
+}
+
+.menu-img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:15px;
+opacity:0.8;
 }
 
 /* BACK */
@@ -103,9 +103,6 @@ font-weight:bold;
 margin-top:12px;
 transition:0.2s;
 }
-button:hover{
-background:#ff3b3b;
-}
 button:active{
 transform:scale(0.92);
 }
@@ -119,13 +116,6 @@ border-radius:12px;
 background:#0f0f0f;
 border:1px solid #222;
 color:#fff;
-outline:none;
-transition:0.2s;
-box-sizing:border-box;
-}
-input:focus{
-border:1px solid #ff2a2a;
-background:#141414;
 }
 
 /* MODAL */
@@ -149,7 +139,6 @@ border-radius:18px;
 width:85%;
 text-align:center;
 border:1px solid #222;
-animation:pop 0.2s ease;
 }
 
 /* SUCCESS */
@@ -161,13 +150,6 @@ color:#00ff88;
 .success-text{
 margin-top:10px;
 color:#ccc;
-word-break:break-word;
-}
-
-/* ANIMATION */
-@keyframes pop{
-from{transform:scale(0.8);opacity:0;}
-to{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
@@ -176,14 +158,23 @@ to{transform:scale(1);opacity:1;}
 
 <!-- MAIN -->
 <div id="main" class="page active">
-<div class="header">
-<img src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
+<div class="container">
+
+<div class="menu-block" onclick="openPage('uc')">
+<div class="menu-title">💎 PUBG UC</div>
+<img class="menu-img" src="https://i.postimg.cc/jSQbLd2t/IMG-20260402-002558-403.jpg">
 </div>
 
-<div class="container">
-<div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
-<div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
+<div class="menu-block" onclick="openPage('steam')">
+<div class="menu-title">💻 Steam</div>
+<img class="menu-img" src="https://i.postimg.cc/3x7r9G0p/steam.jpg">
+</div>
+
+<div class="menu-block" onclick="openPage('stars')">
+<div class="menu-title">⭐ Stars</div>
+<img class="menu-img" src="https://i.postimg.cc/zf4G3YfR/stars.jpg">
+</div>
+
 </div>
 </div>
 
@@ -228,7 +219,7 @@ to{transform:scale(1);opacity:1;}
 <div id="success" class="modal">
 <div class="modal-box">
 <div class="success-icon">✔</div>
-<h3 id="successTitle">Уведомление</h3>
+<h3>Уведомление</h3>
 <div id="successText" class="success-text"></div>
 <button onclick="closeSuccess()">OK</button>
 </div>
@@ -278,7 +269,6 @@ function closeSuccess(){
 document.getElementById("success").style.display="none";
 }
 
-/* STEAM */
 function buySteam(){
 let sum=document.getElementById("steamSum").value;
 let login=document.getElementById("steamLogin").value;
@@ -294,7 +284,6 @@ localStorage.setItem("orders",JSON.stringify(orders));
 showMessage("✅ Steam: "+login+"<br>Сумма: "+sum+"₽");
 }
 
-/* STARS */
 function buyStars(){
 let amount=document.getElementById("starsAmount").value;
 
