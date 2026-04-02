@@ -8,20 +8,16 @@
 body{
 margin:0;
 font-family:Arial;
-background:#000;
-color:#fff;
+background:linear-gradient(180deg,#ffffff,#eaeaea);
+color:#000;
 }
 
 /* HEADER */
 .header{
 padding:15px;
-background:linear-gradient(180deg,#8b0000,#000);
-}
-
-.header-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
+background:rgba(255,255,255,0.6);
+backdrop-filter:blur(15px);
+border-bottom:1px solid rgba(0,0,0,0.1);
 }
 
 .header-title{
@@ -30,22 +26,9 @@ font-weight:bold;
 }
 
 .header-sub{
-color:red;
+color:#777;
 font-size:14px;
 margin-top:5px;
-}
-
-.header-btn{
-width:50px;
-height:50px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:15px;
-background:rgba(0,0,0,0.4);
-border:1px solid rgba(255,255,255,0.3);
-backdrop-filter:blur(10px);
-font-size:22px;
 }
 
 /* PAGE */
@@ -57,17 +40,21 @@ padding:15px;
 padding-bottom:80px;
 }
 
+/* GLASS */
+.glass{
+background:rgba(255,255,255,0.4);
+backdrop-filter:blur(15px);
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.6);
+box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
+
 /* КНОПКИ */
 .menu-btn{
-background:rgba(0,0,0,0.4);
 padding:22px;
-border-radius:25px;
 margin-top:18px;
 text-align:center;
 font-size:20px;
-border:1px solid rgba(255,255,255,0.2);
-backdrop-filter:blur(10px);
-box-shadow:0 0 25px red;
 }
 
 /* GRID */
@@ -79,15 +66,12 @@ margin-top:20px;
 }
 
 .card{
-background:#111;
-border-radius:20px;
 padding:20px;
 text-align:center;
-box-shadow:0 0 15px red;
 }
 
 .price{
-color:#00ff88;
+color:#0a8f4c;
 font-size:18px;
 margin:10px 0;
 }
@@ -98,7 +82,7 @@ width:100%;
 padding:12px;
 border:none;
 border-radius:12px;
-background:red;
+background:#000;
 color:#fff;
 font-weight:bold;
 margin-top:12px;
@@ -111,14 +95,14 @@ padding:12px;
 margin-top:12px;
 border:none;
 border-radius:10px;
-background:#000;
-color:#fff;
-box-shadow:0 0 10px red inset;
+background:rgba(255,255,255,0.6);
+backdrop-filter:blur(10px);
 }
 
 /* BACK */
 .back{
 margin-bottom:10px;
+color:#555;
 }
 
 /* MODAL */
@@ -128,7 +112,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,0.2);
 display:none;
 justify-content:center;
 align-items:center;
@@ -136,9 +120,7 @@ z-index:999;
 }
 
 .modal-box{
-background:#111;
 padding:20px;
-border-radius:20px;
 width:85%;
 text-align:center;
 }
@@ -146,33 +128,21 @@ text-align:center;
 /* BOTTOM MENU */
 .bottom{
 position:fixed;
-bottom:0;
-left:0;
-width:100%;
+bottom:10px;
+left:10px;
+right:10px;
 display:flex;
 justify-content:space-around;
 padding:10px;
-background:rgba(0,0,0,0.5);
-backdrop-filter:blur(10px);
+border-radius:20px;
+background:rgba(255,255,255,0.5);
+backdrop-filter:blur(20px);
+box-shadow:0 5px 20px rgba(0,0,0,0.15);
 }
 
 .bottom-btn{
 text-align:center;
 font-size:14px;
-}
-
-/* PROFILE BLOCK */
-.profile-card{
-background:rgba(0,0,0,0.4);
-padding:20px;
-border-radius:20px;
-margin-top:15px;
-backdrop-filter:blur(10px);
-}
-
-.copy-btn{
-margin-top:10px;
-background:#222;
 }
 </style>
 </head>
@@ -181,43 +151,19 @@ background:#222;
 
 <!-- HEADER -->
 <div class="header">
-<div class="header-row">
-<div>
 <div class="header-title">ANAL_UC_BOT</div>
 <div class="header-sub">Игровой магазин</div>
-</div>
-<div class="header-btn" onclick="openPage('profile')">👤</div>
-</div>
 </div>
 
 <!-- MAIN -->
 <div id="main" class="page active">
 <div class="container">
 
-<div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
-<div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
-<div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
+<div class="menu-btn glass" onclick="openPage('uc')">💎 PUBG UC</div>
+<div class="menu-btn glass" onclick="openPage('steam')">💻 Steam</div>
+<div class="menu-btn glass" onclick="openPage('stars')">⭐ Stars</div>
 
 </div>
-</div>
-
-<!-- PROFILE -->
-<div id="profile" class="page container">
-<div class="back" onclick="openPage('main')">← Назад</div>
-
-<h2>Профиль</h2>
-
-<div class="profile-card">
-<div>Заказов: 1</div>
-<div>Потрачено: 389₽</div>
-</div>
-
-<div class="profile-card">
-<h3>Реферальная ссылка</h3>
-<input id="refLink" value="https://t.me/anallodz" readonly>
-<button class="copy-btn" onclick="copyRef()">Скопировать</button>
-</div>
-
 </div>
 
 <!-- UC -->
@@ -225,31 +171,55 @@ background:#222;
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
-<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button onclick="openModal('60 UC',75)">Купить</button></div>
-<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button onclick="openModal('325 UC',379)">Купить</button></div>
-<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button onclick="openModal('660 UC',749)">Купить</button></div>
-<div class="card"><h3>1800 UC</h3><div class="price">1990₽</div><button onclick="openModal('1800 UC',1990)">Купить</button></div>
+
+<div class="card glass">
+<h3>60 UC</h3>
+<div class="price">75₽</div>
+<button onclick="openModal('60 UC',75)">Купить</button>
+</div>
+
+<div class="card glass">
+<h3>325 UC</h3>
+<div class="price">379₽</div>
+<button onclick="openModal('325 UC',379)">Купить</button>
+</div>
+
+<div class="card glass">
+<h3>660 UC</h3>
+<div class="price">749₽</div>
+<button onclick="openModal('660 UC',749)">Купить</button>
+</div>
+
+<div class="card glass">
+<h3>1800 UC</h3>
+<div class="price">1990₽</div>
+<button onclick="openModal('1800 UC',1990)">Купить</button>
+</div>
+
 </div>
 </div>
 
 <!-- STEAM -->
 <div id="steam" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
+
 <input id="steamSum" placeholder="Сумма">
 <input id="steamLogin" placeholder="Логин">
+
 <button onclick="buySteam()">Купить</button>
 </div>
 
 <!-- STARS -->
 <div id="stars" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
+
 <input id="starsAmount" placeholder="Количество Stars">
 <button onclick="buyStars()">Купить</button>
 </div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-<div class="modal-box">
+<div class="modal-box glass">
 <h3>Введи PUBG ID</h3>
 <input id="pubgId">
 <button onclick="confirmBuy()">Подтвердить</button>
@@ -259,7 +229,7 @@ background:#222;
 
 <!-- SUCCESS -->
 <div id="success" class="modal">
-<div class="modal-box">
+<div class="modal-box glass">
 <h3>Успешно</h3>
 <div id="successText"></div>
 <button onclick="closeSuccess()">OK</button>
@@ -268,7 +238,6 @@ background:#222;
 
 <!-- BOTTOM MENU -->
 <div class="bottom">
-<div class="bottom-btn" onclick="openPage('profile')">👤<br>Профиль</div>
 <div class="bottom-btn" onclick="openReviews()">💬<br>Отзывы</div>
 <div class="bottom-btn" onclick="openHelp()">🎧<br>Поддержка</div>
 </div>
@@ -276,7 +245,6 @@ background:#222;
 <script>
 let currentItem="";
 let currentPrice="";
-let orders = JSON.parse(localStorage.getItem("orders")||"[]");
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
@@ -296,11 +264,8 @@ document.getElementById("modal").style.display="none";
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
 if(!id){alert("Введи ID");return;}
-orders.push({item:currentItem,price:currentPrice});
-localStorage.setItem("orders",JSON.stringify(orders));
 closeModal();
-document.getElementById("success").style.display="flex";
-document.getElementById("successText").innerHTML="Куплено: "+currentItem;
+openSuccess("Куплено: "+currentItem);
 }
 
 function closeSuccess(){
@@ -324,21 +289,12 @@ document.getElementById("success").style.display="flex";
 document.getElementById("successText").innerHTML=text;
 }
 
-/* ССЫЛКИ */
 function openReviews(){
 window.open("https://t.me/anallodz","_blank");
 }
 
 function openHelp(){
 window.open("https://t.me/Anallhelpbot","_blank");
-}
-
-/* КОПИЯ */
-function copyRef(){
-let inp=document.getElementById("refLink");
-inp.select();
-document.execCommand("copy");
-alert("Скопировано");
 }
 </script>
 
