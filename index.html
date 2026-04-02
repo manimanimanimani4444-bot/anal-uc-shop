@@ -18,6 +18,12 @@ padding:15px;
 background:linear-gradient(180deg,#8b0000,#000);
 }
 
+.header-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
 .header-title{
 font-size:22px;
 font-weight:bold;
@@ -29,12 +35,26 @@ font-size:14px;
 margin-top:5px;
 }
 
+.header-btn{
+width:50px;
+height:50px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:15px;
+background:rgba(0,0,0,0.4);
+border:1px solid rgba(255,255,255,0.3);
+backdrop-filter:blur(10px);
+font-size:22px;
+}
+
 /* PAGE */
 .page{display:none;}
 .page.active{display:block;}
 
 .container{
 padding:15px;
+padding-bottom:80px;
 }
 
 /* КНОПКИ */
@@ -50,11 +70,6 @@ backdrop-filter:blur(10px);
 box-shadow:0 0 25px red;
 }
 
-/* BACK */
-.back{
-margin-bottom:10px;
-}
-
 /* GRID */
 .grid{
 display:grid;
@@ -63,7 +78,6 @@ gap:15px;
 margin-top:20px;
 }
 
-/* CARD */
 .card{
 background:#111;
 border-radius:20px;
@@ -88,11 +102,6 @@ background:red;
 color:#fff;
 font-weight:bold;
 margin-top:12px;
-box-shadow:0 0 10px red;
-}
-
-button:active{
-transform:scale(0.95);
 }
 
 /* INPUT */
@@ -105,7 +114,11 @@ border-radius:10px;
 background:#000;
 color:#fff;
 box-shadow:0 0 10px red inset;
-box-sizing:border-box;
+}
+
+/* BACK */
+.back{
+margin-bottom:10px;
 }
 
 /* MODAL */
@@ -127,21 +140,39 @@ background:#111;
 padding:20px;
 border-radius:20px;
 width:85%;
-box-shadow:0 0 20px red;
 text-align:center;
 }
 
-/* SUCCESS */
-.success-icon{
-font-size:50px;
-color:#00ff88;
-text-shadow:0 0 10px #00ff88;
+/* BOTTOM MENU */
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-around;
+padding:10px;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(10px);
 }
 
-.success-text{
+.bottom-btn{
+text-align:center;
+font-size:14px;
+}
+
+/* PROFILE BLOCK */
+.profile-card{
+background:rgba(0,0,0,0.4);
+padding:20px;
+border-radius:20px;
+margin-top:15px;
+backdrop-filter:blur(10px);
+}
+
+.copy-btn{
 margin-top:10px;
-color:#ccc;
-word-break:break-word;
+background:#222;
 }
 </style>
 </head>
@@ -150,8 +181,13 @@ word-break:break-word;
 
 <!-- HEADER -->
 <div class="header">
+<div class="header-row">
+<div>
 <div class="header-title">ANAL_UC_BOT</div>
 <div class="header-sub">Игровой магазин</div>
+</div>
+<div class="header-btn" onclick="openPage('profile')">👤</div>
+</div>
 </div>
 
 <!-- MAIN -->
@@ -161,9 +197,27 @@ word-break:break-word;
 <div class="menu-btn" onclick="openPage('uc')">💎 PUBG UC</div>
 <div class="menu-btn" onclick="openPage('steam')">💻 Steam</div>
 <div class="menu-btn" onclick="openPage('stars')">⭐ Stars</div>
-<div class="menu-btn">👤 Кабинет</div>
 
 </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="page container">
+<div class="back" onclick="openPage('main')">← Назад</div>
+
+<h2>Профиль</h2>
+
+<div class="profile-card">
+<div>Заказов: 1</div>
+<div>Потрачено: 389₽</div>
+</div>
+
+<div class="profile-card">
+<h3>Реферальная ссылка</h3>
+<input id="refLink" value="https://t.me/anallodz" readonly>
+<button class="copy-btn" onclick="copyRef()">Скопировать</button>
+</div>
+
 </div>
 
 <!-- UC -->
@@ -171,48 +225,24 @@ word-break:break-word;
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
-
-<div class="card">
-<h3>60 UC</h3>
-<div class="price">75₽</div>
-<button onclick="openModal('60 UC',75)">Купить</button>
-</div>
-
-<div class="card">
-<h3>325 UC</h3>
-<div class="price">379₽</div>
-<button onclick="openModal('325 UC',379)">Купить</button>
-</div>
-
-<div class="card">
-<h3>660 UC</h3>
-<div class="price">749₽</div>
-<button onclick="openModal('660 UC',749)">Купить</button>
-</div>
-
-<div class="card">
-<h3>1800 UC</h3>
-<div class="price">1990₽</div>
-<button onclick="openModal('1800 UC',1990)">Купить</button>
-</div>
-
+<div class="card"><h3>60 UC</h3><div class="price">75₽</div><button onclick="openModal('60 UC',75)">Купить</button></div>
+<div class="card"><h3>325 UC</h3><div class="price">379₽</div><button onclick="openModal('325 UC',379)">Купить</button></div>
+<div class="card"><h3>660 UC</h3><div class="price">749₽</div><button onclick="openModal('660 UC',749)">Купить</button></div>
+<div class="card"><h3>1800 UC</h3><div class="price">1990₽</div><button onclick="openModal('1800 UC',1990)">Купить</button></div>
 </div>
 </div>
 
 <!-- STEAM -->
 <div id="steam" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
-
 <input id="steamSum" placeholder="Сумма">
 <input id="steamLogin" placeholder="Логин">
-
 <button onclick="buySteam()">Купить</button>
 </div>
 
 <!-- STARS -->
 <div id="stars" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
-
 <input id="starsAmount" placeholder="Количество Stars">
 <button onclick="buyStars()">Купить</button>
 </div>
@@ -221,7 +251,7 @@ word-break:break-word;
 <div id="modal" class="modal">
 <div class="modal-box">
 <h3>Введи PUBG ID</h3>
-<input id="pubgId" placeholder="Например: 5123456789">
+<input id="pubgId">
 <button onclick="confirmBuy()">Подтвердить</button>
 <button onclick="closeModal()">Отмена</button>
 </div>
@@ -230,15 +260,20 @@ word-break:break-word;
 <!-- SUCCESS -->
 <div id="success" class="modal">
 <div class="modal-box">
-<div class="success-icon">✔</div>
 <h3>Успешно</h3>
-<div id="successText" class="success-text"></div>
+<div id="successText"></div>
 <button onclick="closeSuccess()">OK</button>
 </div>
 </div>
 
-<script>
+<!-- BOTTOM MENU -->
+<div class="bottom">
+<div class="bottom-btn" onclick="openPage('profile')">👤<br>Профиль</div>
+<div class="bottom-btn" onclick="openReviews()">💬<br>Отзывы</div>
+<div class="bottom-btn" onclick="openHelp()">🎧<br>Поддержка</div>
+</div>
 
+<script>
 let currentItem="";
 let currentPrice="";
 let orders = JSON.parse(localStorage.getItem("orders")||"[]");
@@ -260,61 +295,51 @@ document.getElementById("modal").style.display="none";
 
 function confirmBuy(){
 let id=document.getElementById("pubgId").value;
-
-if(!id){
-alert("Введи ID");
-return;
-}
-
-orders.push({item:currentItem+" | ID:"+id,price:currentPrice});
+if(!id){alert("Введи ID");return;}
+orders.push({item:currentItem,price:currentPrice});
 localStorage.setItem("orders",JSON.stringify(orders));
-
 closeModal();
-
 document.getElementById("success").style.display="flex";
-document.getElementById("successText").innerHTML =
-"Куплено: "+currentItem+"<br>ID: "+id;
+document.getElementById("successText").innerHTML="Куплено: "+currentItem;
 }
 
 function closeSuccess(){
 document.getElementById("success").style.display="none";
 }
 
-/* STEAM */
 function buySteam(){
-let sum=document.getElementById("steamSum").value;
-let login=document.getElementById("steamLogin").value;
-
-if(!sum||!login){
-alert("Заполни все поля");
-return;
+let sum=steamSum.value,login=steamLogin.value;
+if(!sum||!login){alert("Заполни все");return;}
+openSuccess("Steam: "+login);
 }
 
-orders.push({item:"Steam "+login,price:sum});
-localStorage.setItem("orders",JSON.stringify(orders));
-
-document.getElementById("success").style.display="flex";
-document.getElementById("successText").innerHTML =
-"Steam: "+login+"<br>Сумма: "+sum+"₽";
-}
-
-/* STARS */
 function buyStars(){
-let amount=document.getElementById("starsAmount").value;
-
-if(!amount){
-alert("Введи количество");
-return;
+let a=starsAmount.value;
+if(!a){alert("Введи");return;}
+openSuccess("Stars: "+a);
 }
 
-orders.push({item:"Stars "+amount,price:amount});
-localStorage.setItem("orders",JSON.stringify(orders));
-
+function openSuccess(text){
 document.getElementById("success").style.display="flex";
-document.getElementById("successText").innerHTML =
-"Куплено Stars: "+amount;
+document.getElementById("successText").innerHTML=text;
 }
 
+/* ССЫЛКИ */
+function openReviews(){
+window.open("https://t.me/anallodz","_blank");
+}
+
+function openHelp(){
+window.open("https://t.me/Anallhelpbot","_blank");
+}
+
+/* КОПИЯ */
+function copyRef(){
+let inp=document.getElementById("refLink");
+inp.select();
+document.execCommand("copy");
+alert("Скопировано");
+}
 </script>
 
 </body>
