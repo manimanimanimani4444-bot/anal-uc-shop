@@ -52,31 +52,27 @@ box-shadow:0 8px 25px rgba(0,0,0,0.1);
 /* STEAM */
 .steam-banner{
 margin-top:18px;
-height:110px; /* меньше */
+height:110px;
 border-radius:20px;
 background:url('https://i.postimg.cc/zDWSskNX/Screenshot-20260402-205842.jpg') center/cover no-repeat;
-position:relative;
-overflow:hidden;
 cursor:pointer;
 }
 
 /* STARS */
 .stars-banner{
 margin-top:18px;
-height:110px; /* меньше */
+height:110px;
 border-radius:20px;
 background:url('https://i.postimg.cc/JzCgwhvF/Screenshot-20260402-210833.jpg') center/cover no-repeat;
-position:relative;
-overflow:hidden;
 cursor:pointer;
 }
 
 /* КНОПКИ */
 .menu-btn{
-padding:16px; /* было 22 */
+padding:16px;
 margin-top:18px;
 text-align:center;
-font-size:18px; /* чуть меньше */
+font-size:18px;
 }
 
 /* GRID */
@@ -171,31 +167,25 @@ font-size:14px;
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
 <div class="header-title">ANAL_UC_BOT</div>
 <div class="header-sub">Игровой магазин</div>
 </div>
 
-<!-- MAIN -->
 <div id="main" class="page active">
 <div class="container">
 
 <div class="menu-btn glass" onclick="openPage('uc')">💎 PUBG UC</div>
-
 <div class="steam-banner" onclick="openPage('steam')"></div>
-
 <div class="stars-banner" onclick="openPage('stars')"></div>
 
 </div>
 </div>
 
-<!-- UC -->
 <div id="uc" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
-
 <div class="card glass">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
@@ -219,11 +209,9 @@ font-size:14px;
 <div class="price">1990₽</div>
 <button onclick="openModal('1800 UC',1990)">Купить</button>
 </div>
-
 </div>
 </div>
 
-<!-- STEAM -->
 <div id="steam" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
@@ -233,7 +221,6 @@ font-size:14px;
 <button onclick="buySteam()">Купить</button>
 </div>
 
-<!-- STARS -->
 <div id="stars" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
@@ -241,7 +228,6 @@ font-size:14px;
 <button onclick="buyStars()">Купить</button>
 </div>
 
-<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-box glass">
 <h3>Введи PUBG ID</h3>
@@ -251,7 +237,6 @@ font-size:14px;
 </div>
 </div>
 
-<!-- SUCCESS -->
 <div id="success" class="modal">
 <div class="modal-box glass">
 <h3>Успешно</h3>
@@ -260,7 +245,6 @@ font-size:14px;
 </div>
 </div>
 
-<!-- BOTTOM MENU -->
 <div class="bottom">
 <div class="bottom-btn" onclick="openReviews()">💬<br>Отзывы</div>
 <div class="bottom-btn" onclick="openHelp()">🎧<br>Поддержка</div>
@@ -296,10 +280,27 @@ function closeSuccess(){
 document.getElementById("success").style.display="none";
 }
 
+/* 🔥 КОМИССИЯ 15% */
+function calcSteamTotal(sum){
+return Math.ceil(sum * 1.15);
+}
+
 function buySteam(){
-let sum=steamSum.value,login=steamLogin.value;
-if(!sum||!login){alert("Заполни все");return;}
-openSuccess("Steam: "+login);
+let sum=parseFloat(steamSum.value);
+let login=steamLogin.value;
+
+if(!sum||!login){
+alert("Заполни все");
+return;
+}
+
+let total=calcSteamTotal(sum);
+
+openSuccess(
+"Steam: "+login+"<br>"+
+"Сумма: "+sum+"₽<br>"+
+"К оплате (15%): "+total+"₽"
+);
 }
 
 function buyStars(){
