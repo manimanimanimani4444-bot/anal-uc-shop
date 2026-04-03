@@ -49,59 +49,34 @@ border:1px solid rgba(255,255,255,0.6);
 box-shadow:0 8px 25px rgba(0,0,0,0.1);
 }
 
-/* STEAM NEW UI */
-.steam-block{
-background:#1a1d26;
-color:#fff;
+/* STEAM */
+.steam-banner{
+margin-top:18px;
+height:110px; /* меньше */
 border-radius:20px;
-padding:15px;
-margin-top:15px;
-}
-
-.steam-input{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#2a2e3a;
-color:#fff;
-margin-top:10px;
-}
-
-.switch{
-display:flex;
-background:#2a2e3a;
-border-radius:12px;
-margin-top:10px;
+background:url('https://i.postimg.cc/zDWSskNX/Screenshot-20260402-205842.jpg') center/cover no-repeat;
+position:relative;
 overflow:hidden;
-}
-
-.switch div{
-flex:1;
-padding:10px;
-text-align:center;
-color:#aaa;
 cursor:pointer;
 }
 
-.switch .active{
-background:#6c5ce7;
-color:#fff;
-}
-
-.result{
-margin-top:10px;
-padding:12px;
-border-radius:12px;
-background:#2a2e3a;
+/* STARS */
+.stars-banner{
+margin-top:18px;
+height:110px; /* меньше */
+border-radius:20px;
+background:url('https://i.postimg.cc/JzCgwhvF/Screenshot-20260402-210833.jpg') center/cover no-repeat;
+position:relative;
+overflow:hidden;
+cursor:pointer;
 }
 
 /* КНОПКИ */
 .menu-btn{
-padding:16px;
+padding:16px; /* было 22 */
 margin-top:18px;
 text-align:center;
-font-size:18px;
+font-size:18px; /* чуть меньше */
 }
 
 /* GRID */
@@ -143,6 +118,7 @@ margin-top:12px;
 border:none;
 border-radius:10px;
 background:rgba(255,255,255,0.6);
+backdrop-filter:blur(10px);
 }
 
 /* BACK */
@@ -183,6 +159,7 @@ padding:10px;
 border-radius:20px;
 background:rgba(255,255,255,0.5);
 backdrop-filter:blur(20px);
+box-shadow:0 5px 20px rgba(0,0,0,0.15);
 }
 
 .bottom-btn{
@@ -194,6 +171,7 @@ font-size:14px;
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
 <div class="header-title">ANAL_UC_BOT</div>
 <div class="header-sub">Игровой магазин</div>
@@ -204,8 +182,10 @@ font-size:14px;
 <div class="container">
 
 <div class="menu-btn glass" onclick="openPage('uc')">💎 PUBG UC</div>
-<div class="menu-btn glass" onclick="openPage('steam')">💳 Steam</div>
-<div class="menu-btn glass" onclick="openPage('stars')">⭐ Stars</div>
+
+<div class="steam-banner" onclick="openPage('steam')"></div>
+
+<div class="stars-banner" onclick="openPage('stars')"></div>
 
 </div>
 </div>
@@ -215,11 +195,31 @@ font-size:14px;
 <div class="back" onclick="openPage('main')">← Назад</div>
 
 <div class="grid">
+
 <div class="card glass">
 <h3>60 UC</h3>
 <div class="price">75₽</div>
 <button onclick="openModal('60 UC',75)">Купить</button>
 </div>
+
+<div class="card glass">
+<h3>325 UC</h3>
+<div class="price">379₽</div>
+<button onclick="openModal('325 UC',379)">Купить</button>
+</div>
+
+<div class="card glass">
+<h3>660 UC</h3>
+<div class="price">749₽</div>
+<button onclick="openModal('660 UC',749)">Купить</button>
+</div>
+
+<div class="card glass">
+<h3>1800 UC</h3>
+<div class="price">1990₽</div>
+<button onclick="openModal('1800 UC',1990)">Купить</button>
+</div>
+
 </div>
 </div>
 
@@ -227,27 +227,10 @@ font-size:14px;
 <div id="steam" class="page container">
 <div class="back" onclick="openPage('main')">← Назад</div>
 
-<div class="steam-block">
-<div>Логин Steam</div>
-<input id="steamLogin" class="steam-input" placeholder="Введите логин">
-</div>
-
-<div class="steam-block">
-<div>Сумма пополнения</div>
-<input id="steamSum" class="steam-input" placeholder="Введите сумму">
-
-<div class="switch">
-<div id="rubBtn" class="active" onclick="setCurrency('rub')">RUB</div>
-<div id="usdBtn" onclick="setCurrency('usd')">USD</div>
-</div>
-
-<div id="steamResult" class="result">
-Введите сумму
-</div>
-</div>
+<input id="steamSum" placeholder="Сумма">
+<input id="steamLogin" placeholder="Логин">
 
 <button onclick="buySteam()">Купить</button>
-
 </div>
 
 <!-- STARS -->
@@ -264,6 +247,7 @@ font-size:14px;
 <h3>Введи PUBG ID</h3>
 <input id="pubgId">
 <button onclick="confirmBuy()">Подтвердить</button>
+<button onclick="closeModal()">Отмена</button>
 </div>
 </div>
 
@@ -276,54 +260,46 @@ font-size:14px;
 </div>
 </div>
 
+<!-- BOTTOM MENU -->
+<div class="bottom">
+<div class="bottom-btn" onclick="openReviews()">💬<br>Отзывы</div>
+<div class="bottom-btn" onclick="openHelp()">🎧<br>Поддержка</div>
+</div>
+
 <script>
-let currency="rub";
+let currentItem="";
+let currentPrice="";
 
 function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 }
 
-function setCurrency(c){
-currency=c;
-rubBtn.classList.remove("active");
-usdBtn.classList.remove("active");
-if(c==="rub") rubBtn.classList.add("active");
-if(c==="usd") usdBtn.classList.add("active");
-updateSteam();
+function openModal(item,price){
+currentItem=item;
+currentPrice=price;
+document.getElementById("modal").style.display="flex";
 }
 
-function calcSteamTotal(sum){
-return Math.ceil(sum * 1.15);
+function closeModal(){
+document.getElementById("modal").style.display="none";
 }
 
-steamSum.addEventListener("input", updateSteam);
-
-function updateSteam(){
-let sum=parseFloat(steamSum.value);
-
-if(!sum){
-steamResult.innerHTML="Введите сумму";
-return;
+function confirmBuy(){
+let id=document.getElementById("pubgId").value;
+if(!id){alert("Введи ID");return;}
+closeModal();
+openSuccess("Куплено: "+currentItem);
 }
 
-let total=calcSteamTotal(sum);
-
-steamResult.innerHTML=
-"Получите: "+sum+(currency==="usd"?"$":"₽")+"<br>"+
-"К оплате: "+total+(currency==="usd"?"$":"₽");
+function closeSuccess(){
+document.getElementById("success").style.display="none";
 }
 
 function buySteam(){
-let sum=steamSum.value;
-let login=steamLogin.value;
-
-if(!sum||!login){
-alert("Заполни всё");
-return;
-}
-
-openSuccess("Steam: "+login+"<br>Сумма: "+sum);
+let sum=steamSum.value,login=steamLogin.value;
+if(!sum||!login){alert("Заполни все");return;}
+openSuccess("Steam: "+login);
 }
 
 function buyStars(){
@@ -332,16 +308,19 @@ if(!a){alert("Введи");return;}
 openSuccess("Stars: "+a);
 }
 
-function openModal(){}
-function confirmBuy(){}
-function closeSuccess(){
-document.getElementById("success").style.display="none";
-}
 function openSuccess(text){
 document.getElementById("success").style.display="flex";
 document.getElementById("successText").innerHTML=text;
 }
+
+function openReviews(){
+window.open("https://t.me/anallodz","_blank");
+}
+
+function openHelp(){
+window.open("https://t.me/Anallhelpbot","_blank");
+}
 </script>
 
 </body>
-  </html>
+</html>
